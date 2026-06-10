@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TurfBook - Premium Turf Booking 🇵🇰</title>
+    <title>TurfBook - Premium Cricket Turf Booking 🇵🇰</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏏</text></svg>">
 </head>
 <body>
     <!-- Animated Background -->
@@ -19,13 +19,12 @@
         <div class="bg-circle circle-5"></div>
     </div>
 
-    <!-- Particles -->
     <div id="particles"></div>
 
     <!-- Navigation -->
     <nav class="navbar glass-effect">
         <div class="nav-brand">
-            <i class="fas fa-futbol spin-slow"></i>
+            <span class="brand-emoji spin-slow">🏏</span>
             <span>TurfBook</span>
         </div>
         <div class="nav-links">
@@ -44,14 +43,14 @@
         <div class="hero-content fade-in-up">
             <div class="hero-badge glass-effect">
                 <i class="fas fa-fire"></i>
-                <span>Book Your Game Today</span>
+                <span>Book Your Cricket Match Today</span>
             </div>
             <h1 class="hero-title">
                 <span class="gradient-text">Book Your</span>
                 <br>
-                <span class="hero-highlight">Premium Turf</span>
+                <span class="hero-highlight">Cricket Turf</span>
             </h1>
-            <p class="hero-subtitle">Experience world-class playing fields with easy online booking. Pay via <strong>Easypaisa</strong> or <strong>JazzCash</strong></p>
+            <p class="hero-subtitle">Premium cricket grounds with professional pitches. Pay via <strong>Easypaisa</strong> or <strong>JazzCash</strong></p>
             <div class="hero-stats">
                 <div class="stat-item">
                     <span class="stat-number">4</span>
@@ -64,7 +63,7 @@
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item">
-                    <span class="stat-number">FIFA</span>
+                    <span class="stat-number">ICC</span>
                     <span class="stat-label">Standard</span>
                 </div>
             </div>
@@ -88,12 +87,21 @@
             </a>
         </div>
         <div class="hero-image fade-in-right">
-            <div class="field-graphic">
-                <div class="field-line"></div>
-                <div class="field-circle"></div>
-                <div class="field-center-dot"></div>
-                <div class="field-goal-top"></div>
-                <div class="field-goal-bottom"></div>
+            <!-- Cricket Field Graphic -->
+            <div class="cricket-field">
+                <div class="cricket-boundary"></div>
+                <div class="cricket-inner-circle"></div>
+                <div class="cricket-pitch">
+                    <div class="cricket-crease-top"></div>
+                    <div class="cricket-crease-bottom"></div>
+                    <div class="cricket-stumps cricket-stumps-top">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="cricket-stumps cricket-stumps-bottom">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="cricket-ball"></div>
             </div>
         </div>
     </section>
@@ -101,11 +109,10 @@
     <!-- Slots Section -->
     <section id="slots" class="slots-section">
         <div class="section-header fade-in-up">
-            <h2 class="section-title">Available <span class="gradient-text">Slots</span></h2>
-            <p class="section-subtitle">Choose your preferred time and pay via Easypaisa or JazzCash</p>
+            <h2 class="section-title">Available <span class="gradient-text">Cricket Slots</span></h2>
+            <p class="section-subtitle">Book your match • Pay via Easypaisa or JazzCash</p>
         </div>
 
-        <!-- Date Picker -->
         <div class="date-picker-container glass-effect fade-in-up">
             <label for="booking-date">
                 <i class="fas fa-calendar-alt"></i>
@@ -115,7 +122,7 @@
         </div>
 
         <div class="slots-grid" id="slots-container">
-            <!-- Slot 1 -->
+            <!-- Slot 1 - Morning -->
             <div class="slot-card glass-effect fade-in-up" data-slot="1" style="--delay: 0.1s">
                 <div class="slot-ribbon">Budget</div>
                 <div class="slot-status available" id="status-1">
@@ -131,9 +138,9 @@
                     <span>6:00 AM - 8:00 AM</span>
                 </div>
                 <div class="slot-details">
-                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Size Field</span></div>
-                    <div class="detail-item"><i class="fas fa-tint"></i><span>Fresh Morning Dew</span></div>
-                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 14 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-baseball-ball"></i><span>Full Cricket Ground</span></div>
+                    <div class="detail-item"><i class="fas fa-tint"></i><span>Rolled Pitch</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
                     <div class="detail-item"><i class="fas fa-parking"></i><span>Free Parking</span></div>
                 </div>
                 <div class="slot-price">
@@ -141,13 +148,13 @@
                     <span class="amount" data-target="1000">0</span>
                     <span class="per">/session</span>
                 </div>
-                <button class="book-button btn-morning" id="book-btn-1" onclick="openBookingModal(1, '6:00 AM - 8:00 AM', 1000)">
+                <button type="button" class="book-button btn-morning" id="book-btn-1" onclick="openBookingModal(1, '6:00 AM - 8:00 AM', 1000)">
                     <span>Book Now</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- Slot 2 -->
+            <!-- Slot 2 - Afternoon -->
             <div class="slot-card glass-effect fade-in-up" data-slot="2" style="--delay: 0.2s">
                 <div class="slot-status available" id="status-2">
                     <i class="fas fa-check-circle"></i>
@@ -162,9 +169,9 @@
                     <span>2:00 PM - 4:00 PM</span>
                 </div>
                 <div class="slot-details">
-                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Size Field</span></div>
-                    <div class="detail-item"><i class="fas fa-umbrella-beach"></i><span>Shaded Rest Area</span></div>
-                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 14 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-baseball-ball"></i><span>Full Cricket Ground</span></div>
+                    <div class="detail-item"><i class="fas fa-umbrella-beach"></i><span>Shaded Dugouts</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
                     <div class="detail-item"><i class="fas fa-bottle-water"></i><span>Water Available</span></div>
                 </div>
                 <div class="slot-price">
@@ -172,15 +179,15 @@
                     <span class="amount" data-target="1500">0</span>
                     <span class="per">/session</span>
                 </div>
-                <button class="book-button btn-afternoon" id="book-btn-2" onclick="openBookingModal(2, '2:00 PM - 4:00 PM', 1500)">
+                <button type="button" class="book-button btn-afternoon" id="book-btn-2" onclick="openBookingModal(2, '2:00 PM - 4:00 PM', 1500)">
                     <span>Book Now</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- Slot 3 -->
+            <!-- Slot 3 - Evening (HOT DEAL ₨100) -->
             <div class="slot-card glass-effect fade-in-up" data-slot="3" style="--delay: 0.3s">
-                <div class="slot-ribbon hot">🔥 Hot</div>
+                <div class="slot-ribbon hot">🔥 Test ₨100</div>
                 <div class="slot-status available" id="status-3">
                     <i class="fas fa-check-circle"></i>
                     <span>Available</span>
@@ -194,23 +201,23 @@
                     <span>6:00 PM - 8:00 PM</span>
                 </div>
                 <div class="slot-details">
-                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Size Field</span></div>
+                    <div class="detail-item"><i class="fas fa-baseball-ball"></i><span>Full Cricket Ground</span></div>
                     <div class="detail-item"><i class="fas fa-lightbulb"></i><span>Floodlights Included</span></div>
-                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 14 Players</span></div>
-                    <div class="detail-item"><i class="fas fa-music"></i><span>Sound System</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-bullhorn"></i><span>Scoreboard System</span></div>
                 </div>
                 <div class="slot-price">
                     <span class="currency">₨</span>
-                    <span class="amount" data-target="2000">0</span>
+                    <span class="amount" data-target="100">0</span>
                     <span class="per">/session</span>
                 </div>
-                <button class="book-button btn-evening" id="book-btn-3" onclick="openBookingModal(3, '6:00 PM - 8:00 PM', 2000)">
-                    <span>Book Now</span>
+                <button type="button" class="book-button btn-evening" id="book-btn-3" onclick="openBookingModal(3, '6:00 PM - 8:00 PM', 100)">
+                    <span>Book Now (Test)</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- Slot 4 -->
+            <!-- Slot 4 - Night -->
             <div class="slot-card glass-effect fade-in-up" data-slot="4" style="--delay: 0.4s">
                 <div class="slot-ribbon premium">Premium</div>
                 <div class="slot-status available" id="status-4">
@@ -226,9 +233,9 @@
                     <span>8:00 PM - 10:00 PM</span>
                 </div>
                 <div class="slot-details">
-                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Size Field</span></div>
+                    <div class="detail-item"><i class="fas fa-baseball-ball"></i><span>Full Cricket Ground</span></div>
                     <div class="detail-item"><i class="fas fa-lightbulb"></i><span>Premium Floodlights</span></div>
-                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 14 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
                     <div class="detail-item"><i class="fas fa-trophy"></i><span>Match Commentary</span></div>
                 </div>
                 <div class="slot-price">
@@ -236,7 +243,7 @@
                     <span class="amount" data-target="2000">0</span>
                     <span class="per">/session</span>
                 </div>
-                <button class="book-button btn-night" id="book-btn-4" onclick="openBookingModal(4, '8:00 PM - 10:00 PM', 2000)">
+                <button type="button" class="book-button btn-night" id="book-btn-4" onclick="openBookingModal(4, '8:00 PM - 10:00 PM', 2000)">
                     <span>Book Now</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
@@ -258,9 +265,9 @@
                     <span class="bar-price">₨1,500</span>
                 </div>
                 <div class="price-bar">
-                    <span class="bar-label">Evening (6-8 PM)</span>
-                    <div class="bar-track"><div class="bar-fill evening-bar" style="width: 100%"></div></div>
-                    <span class="bar-price">₨2,000</span>
+                    <span class="bar-label">🔥 Evening (TEST)</span>
+                    <div class="bar-track"><div class="bar-fill evening-bar" style="width: 5%"></div></div>
+                    <span class="bar-price">₨100</span>
                 </div>
                 <div class="price-bar">
                     <span class="bar-label">Night (8-10 PM)</span>
@@ -279,22 +286,22 @@
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                     <h4>Instant Booking</h4>
-                    <p>Book your slot in seconds with our simple process</p>
+                    <p>Book your cricket slot in seconds</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon icon-green"><i class="fas fa-mobile-alt"></i></div>
                     <h4>Easy Payments</h4>
-                    <p>Pay via Easypaisa, JazzCash or Bank Transfer</p>
+                    <p>Pay via Easypaisa, JazzCash or Bank</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon icon-pink"><i class="fas fa-star"></i></div>
-                    <h4>Premium Fields</h4>
-                    <p>FIFA-standard artificial turf for best experience</p>
+                    <div class="feature-icon icon-pink"><i class="fas fa-baseball-ball"></i></div>
+                    <h4>ICC Standard</h4>
+                    <p>Professional cricket pitches and grounds</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon icon-yellow"><i class="fas fa-receipt"></i></div>
                     <h4>Digital Receipt</h4>
-                    <p>Get instant confirmation with unique booking ID</p>
+                    <p>Get instant confirmation with booking ID</p>
                 </div>
             </div>
         </div>
@@ -303,11 +310,10 @@
     <!-- ===== BOOKING MODAL ===== -->
     <div class="modal-overlay" id="booking-modal">
         <div class="modal glass-effect slide-in-up">
-            <button class="modal-close" onclick="closeBookingModal()">
+            <button type="button" class="modal-close" onclick="closeBookingModal()">
                 <i class="fas fa-times"></i>
             </button>
 
-            <!-- Progress Steps -->
             <div class="progress-steps">
                 <div class="step active" id="step-1-indicator">
                     <div class="step-number">1</div>
@@ -338,10 +344,10 @@
                         <span class="summary-price-value" id="summary-price">-</span>
                     </div>
                 </div>
-                <form id="user-details-form" class="booking-form">
+                <div class="booking-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="fullName"><i class="fas fa-user"></i> Full Name *</label>
+                            <label for="fullName"><i class="fas fa-user"></i> Captain Name *</label>
                             <input type="text" id="fullName" placeholder="Ahmed Khan" required>
                         </div>
                         <div class="form-group">
@@ -356,40 +362,38 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="teamName"><i class="fas fa-users"></i> Team Name</label>
-                            <input type="text" id="teamName" placeholder="Your Team">
+                            <input type="text" id="teamName" placeholder="Lahore Lions">
                         </div>
                         <div class="form-group">
-                            <label for="players"><i class="fas fa-running"></i> Players *</label>
+                            <label for="players"><i class="fas fa-baseball-ball"></i> Players *</label>
                             <select id="players" required>
                                 <option value="">Select</option>
-                                <option value="4">4 Players</option>
-                                <option value="6">6 Players</option>
-                                <option value="8">8 Players</option>
-                                <option value="10">10 Players</option>
-                                <option value="12">12 Players</option>
-                                <option value="14">14 Players</option>
+                                <option value="6">6 Players (3v3)</option>
+                                <option value="8">8 Players (4v4)</option>
+                                <option value="12">12 Players (6v6)</option>
+                                <option value="16">16 Players (8v8)</option>
+                                <option value="22">22 Players (11v11)</option>
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="next-button">
+                    <button type="button" class="next-button" id="continue-to-payment-btn" onclick="handleFormSubmit()">
                         <span>Continue to Payment</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                </form>
+                </div>
             </div>
 
             <!-- STEP 2: Payment -->
             <div class="modal-step hidden" id="step-2">
                 <h2 class="modal-title"><i class="fas fa-wallet"></i> Payment</h2>
                 
-                <!-- Order Summary -->
                 <div class="payment-info glass-effect-dark">
                     <div class="payment-header">
                         <h3>Order Summary</h3>
                         <div class="payment-badge">PKR</div>
                     </div>
                     <div class="payment-row">
-                        <span>Turf Booking</span>
+                        <span>Cricket Booking</span>
                         <span id="payment-slot-time">-</span>
                     </div>
                     <div class="payment-row">
@@ -397,7 +401,7 @@
                         <span id="payment-date">-</span>
                     </div>
                     <div class="payment-row">
-                        <span>Customer</span>
+                        <span>Captain</span>
                         <span id="payment-customer">-</span>
                     </div>
                     <div class="payment-divider"></div>
@@ -407,7 +411,6 @@
                     </div>
                 </div>
 
-                <!-- Payment Method Selection -->
                 <div class="payment-methods">
                     <h3 class="methods-title"><i class="fas fa-credit-card"></i> Select Payment Method</h3>
                     <div class="method-cards">
@@ -439,22 +442,19 @@
                                 <i class="fas fa-university"></i>
                             </div>
                             <div class="method-info">
-                                <span class="method-name">Bank Transfer</span>
-                                <span class="method-desc">Direct Transfer</span>
+                                <span class="method-name">Bank</span>
+                                <span class="method-desc">Transfer</span>
                             </div>
                             <div class="method-check"><i class="fas fa-check"></i></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Payment Details (changes based on method) -->
                 <div class="payment-details-section glass-effect-dark" id="payment-details">
-                    <!-- Easypaisa Details (default) -->
+                    <!-- Easypaisa - REAL ACCOUNT -->
                     <div class="payment-method-details" id="details-easypaisa">
                         <div class="account-header easypaisa-header">
-                            <div class="account-logo-big ep-bg">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
+                            <div class="account-logo-big ep-bg"><i class="fas fa-mobile-alt"></i></div>
                             <div>
                                 <h3>Send Payment to Easypaisa</h3>
                                 <p>Follow steps below to complete payment</p>
@@ -463,12 +463,12 @@
                         <div class="account-details">
                             <div class="account-row">
                                 <span class="account-label">Account Title</span>
-                                <span class="account-value">TurfBook Sports</span>
+                                <span class="account-value">Muhammad Rafaqat</span>
                             </div>
                             <div class="account-row highlight-row">
                                 <span class="account-label">Easypaisa Number</span>
-                                <span class="account-value copyable" onclick="copyToClipboard('03001234567', this)">
-                                    0300-1234567
+                                <span class="account-value copyable" onclick="copyToClipboard('03409016279', this)">
+                                    0340-9016279
                                     <i class="fas fa-copy"></i>
                                 </span>
                             </div>
@@ -481,21 +481,19 @@
                             <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
                             <ol>
                                 <li>Open <strong>Easypaisa App</strong> on your phone</li>
-                                <li>Go to <strong>Send Money</strong></li>
-                                <li>Enter number: <strong>0300-1234567</strong></li>
+                                <li>Tap <strong>Send Money</strong></li>
+                                <li>Enter number: <strong>0340-9016279</strong></li>
                                 <li>Enter amount: <strong id="ep-step-amount">₨0</strong></li>
                                 <li>Confirm and note the <strong>Transaction ID</strong></li>
-                                <li>Enter Transaction ID below</li>
+                                <li>Enter Transaction ID below ⬇️</li>
                             </ol>
                         </div>
                     </div>
 
-                    <!-- JazzCash Details -->
+                    <!-- JazzCash -->
                     <div class="payment-method-details hidden" id="details-jazzcash">
                         <div class="account-header jazzcash-header">
-                            <div class="account-logo-big jc-bg">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
+                            <div class="account-logo-big jc-bg"><i class="fas fa-mobile-alt"></i></div>
                             <div>
                                 <h3>Send Payment to JazzCash</h3>
                                 <p>Follow steps below to complete payment</p>
@@ -504,12 +502,12 @@
                         <div class="account-details">
                             <div class="account-row">
                                 <span class="account-label">Account Title</span>
-                                <span class="account-value">TurfBook Sports</span>
+                                <span class="account-value">Muhammad Rafaqat</span>
                             </div>
                             <div class="account-row highlight-row">
                                 <span class="account-label">JazzCash Number</span>
-                                <span class="account-value copyable" onclick="copyToClipboard('03211234567', this)">
-                                    0321-1234567
+                                <span class="account-value copyable" onclick="copyToClipboard('03409016279', this)">
+                                    0340-9016279
                                     <i class="fas fa-copy"></i>
                                 </span>
                             </div>
@@ -522,21 +520,19 @@
                             <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
                             <ol>
                                 <li>Open <strong>JazzCash App</strong> on your phone</li>
-                                <li>Go to <strong>Send Money</strong></li>
-                                <li>Enter number: <strong>0321-1234567</strong></li>
+                                <li>Tap <strong>Send Money</strong></li>
+                                <li>Enter number: <strong>0340-9016279</strong></li>
                                 <li>Enter amount: <strong id="jc-step-amount">₨0</strong></li>
                                 <li>Confirm and note the <strong>Transaction ID</strong></li>
-                                <li>Enter Transaction ID below</li>
+                                <li>Enter Transaction ID below ⬇️</li>
                             </ol>
                         </div>
                     </div>
 
-                    <!-- Bank Transfer Details -->
+                    <!-- Bank -->
                     <div class="payment-method-details hidden" id="details-bank">
                         <div class="account-header bank-header">
-                            <div class="account-logo-big bk-bg">
-                                <i class="fas fa-university"></i>
-                            </div>
+                            <div class="account-logo-big bk-bg"><i class="fas fa-university"></i></div>
                             <div>
                                 <h3>Bank Transfer Details</h3>
                                 <p>Transfer to the account below</p>
@@ -545,23 +541,16 @@
                         <div class="account-details">
                             <div class="account-row">
                                 <span class="account-label">Bank Name</span>
-                                <span class="account-value">Meezan Bank</span>
+                                <span class="account-value">Easypaisa (Telenor Bank)</span>
                             </div>
                             <div class="account-row">
                                 <span class="account-label">Account Title</span>
-                                <span class="account-value">TurfBook Sports</span>
+                                <span class="account-value">Muhammad Rafaqat</span>
                             </div>
                             <div class="account-row highlight-row">
                                 <span class="account-label">Account Number</span>
-                                <span class="account-value copyable" onclick="copyToClipboard('02340109876543', this)">
-                                    0234-0109876543
-                                    <i class="fas fa-copy"></i>
-                                </span>
-                            </div>
-                            <div class="account-row">
-                                <span class="account-label">IBAN</span>
-                                <span class="account-value copyable" onclick="copyToClipboard('PK36MEZN0099012345678901', this)">
-                                    PK36MEZN00990...
+                                <span class="account-value copyable" onclick="copyToClipboard('03409016279', this)">
+                                    03409016279
                                     <i class="fas fa-copy"></i>
                                 </span>
                             </div>
@@ -574,24 +563,23 @@
                             <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
                             <ol>
                                 <li>Open your <strong>Banking App</strong></li>
-                                <li>Go to <strong>Fund Transfer</strong></li>
+                                <li>Tap <strong>Fund Transfer</strong></li>
                                 <li>Add beneficiary with details above</li>
                                 <li>Transfer amount: <strong id="bk-step-amount">₨0</strong></li>
                                 <li>Note the <strong>Transaction Reference</strong></li>
-                                <li>Enter Transaction ID below</li>
+                                <li>Enter Transaction ID below ⬇️</li>
                             </ol>
                         </div>
                     </div>
                 </div>
 
-                <!-- Transaction ID Input -->
                 <div class="transaction-section">
                     <div class="form-group">
                         <label for="transactionId">
                             <i class="fas fa-hashtag"></i>
                             Transaction ID / Reference Number *
                         </label>
-                        <input type="text" id="transactionId" placeholder="e.g. TXN123456789 or EP-987654" required>
+                        <input type="text" id="transactionId" placeholder="e.g. TXN123456789 or EP-987654">
                         <p class="input-hint">Enter the transaction ID you received after sending payment</p>
                     </div>
                     <div class="form-group">
@@ -599,11 +587,10 @@
                             <i class="fas fa-phone"></i>
                             Sender's Mobile Number *
                         </label>
-                        <input type="tel" id="senderNumber" placeholder="03001234567" required>
+                        <input type="tel" id="senderNumber" placeholder="03001234567">
                     </div>
                 </div>
 
-                <!-- Screenshot Upload (Optional) -->
                 <div class="screenshot-section glass-effect-dark">
                     <label for="screenshot" class="screenshot-label">
                         <i class="fas fa-camera"></i>
@@ -620,11 +607,11 @@
                 </div>
 
                 <div class="button-group">
-                    <button class="back-button" onclick="goToStep(1)">
+                    <button type="button" class="back-button" onclick="goToStep(1)">
                         <i class="fas fa-arrow-left"></i>
                         <span>Back</span>
                     </button>
-                    <button class="pay-button" id="pay-button" onclick="processPayment()">
+                    <button type="button" class="pay-button" id="pay-button" onclick="processPayment()">
                         <span id="pay-button-text">Confirm Payment</span>
                         <div class="spinner hidden" id="pay-spinner"></div>
                     </button>
@@ -640,12 +627,12 @@
                         </div>
                         <div class="confetti" id="confetti"></div>
                     </div>
-                    <h2 class="confirmation-title">Booking Confirmed! 🎉</h2>
-                    <p class="confirmation-subtitle">Your turf has been successfully booked</p>
+                    <h2 class="confirmation-title">Howzat! Booking Confirmed! 🏏</h2>
+                    <p class="confirmation-subtitle">Your cricket ground has been successfully booked</p>
 
                     <div class="receipt glass-effect-dark" id="receipt">
                         <div class="receipt-header">
-                            <div class="receipt-logo"><i class="fas fa-futbol"></i><span>TurfBook</span></div>
+                            <div class="receipt-logo"><span class="receipt-emoji">🏏</span><span>TurfBook</span></div>
                             <div class="receipt-badge">CONFIRMED</div>
                         </div>
                         <div class="receipt-divider"></div>
@@ -655,12 +642,12 @@
                                 <span class="value" id="receipt-id">-</span>
                             </div>
                             <div class="receipt-details">
-                                <div class="receipt-row"><i class="fas fa-user"></i><span class="label">Name</span><span class="value" id="receipt-name">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-user"></i><span class="label">Captain</span><span class="value" id="receipt-name">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-phone"></i><span class="label">Phone</span><span class="value" id="receipt-phone">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-envelope"></i><span class="label">Email</span><span class="value" id="receipt-email">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-calendar"></i><span class="label">Date</span><span class="value" id="receipt-date">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-clock"></i><span class="label">Time</span><span class="value" id="receipt-time">-</span></div>
-                                <div class="receipt-row"><i class="fas fa-running"></i><span class="label">Players</span><span class="value" id="receipt-players">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-baseball-ball"></i><span class="label">Players</span><span class="value" id="receipt-players">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-users"></i><span class="label">Team</span><span class="value" id="receipt-team">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-wallet"></i><span class="label">Payment</span><span class="value" id="receipt-method">-</span></div>
                                 <div class="receipt-row"><i class="fas fa-hashtag"></i><span class="label">TXN ID</span><span class="value" id="receipt-txn">-</span></div>
@@ -673,19 +660,19 @@
                         </div>
                         <div class="receipt-footer">
                             <div class="receipt-qr"><div class="qr-placeholder" id="qr-code"></div></div>
-                            <p>Show this receipt at the venue</p>
+                            <p>Show this receipt at the cricket ground</p>
                             <p class="receipt-time-stamp" id="receipt-timestamp">-</p>
                         </div>
                     </div>
 
                     <div class="confirmation-actions">
-                        <button class="download-button" onclick="downloadReceipt()">
+                        <button type="button" class="download-button" onclick="downloadReceipt()">
                             <i class="fas fa-download"></i><span>Download</span>
                         </button>
-                        <button class="share-button" onclick="shareOnWhatsApp()">
+                        <button type="button" class="share-button" onclick="shareOnWhatsApp()">
                             <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
                         </button>
-                        <button class="done-button" onclick="closeBookingModal()">
+                        <button type="button" class="done-button" onclick="closeBookingModal()">
                             <i class="fas fa-check"></i><span>Done</span>
                         </button>
                     </div>
@@ -698,14 +685,14 @@
     <div class="toast" id="toast">
         <div class="toast-icon"><i class="fas fa-info-circle"></i></div>
         <div class="toast-message" id="toast-message">Notification</div>
-        <button class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></button>
+        <button type="button" class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></button>
     </div>
 
     <!-- Footer -->
     <footer class="footer glass-effect" id="contact">
         <div class="footer-content">
-            <div class="footer-brand"><i class="fas fa-futbol"></i><span>TurfBook</span></div>
-            <p>Premium Turf Booking • Pakistan 🇵🇰</p>
+            <div class="footer-brand"><span class="footer-emoji">🏏</span><span>TurfBook</span></div>
+            <p>Premium Cricket Turf Booking • Pakistan 🇵🇰</p>
             <div class="footer-payment-methods">
                 <span>We Accept:</span>
                 <div class="footer-method">Easypaisa</div>
@@ -714,7 +701,7 @@
             </div>
             <div class="footer-info">
                 <div class="footer-info-item"><i class="fas fa-map-marker-alt"></i><span>Lahore, Pakistan</span></div>
-                <div class="footer-info-item"><i class="fas fa-phone"></i><span>+92 300 1234567</span></div>
+                <div class="footer-info-item"><i class="fas fa-phone"></i><span>0340-9016279</span></div>
                 <div class="footer-info-item"><i class="fas fa-envelope"></i><span>info@turfbook.pk</span></div>
             </div>
             <div class="footer-links">
@@ -723,7 +710,7 @@
                 <a href="#"><i class="fab fa-facebook"></i></a>
                 <a href="#"><i class="fab fa-tiktok"></i></a>
             </div>
-            <p class="copyright">© 2024 TurfBook. All rights reserved.</p>
+            <p class="copyright">© 2024 TurfBook Cricket. All rights reserved.</p>
         </div>
     </footer>
 
