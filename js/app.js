@@ -1,111 +1,76 @@
-// ===== MAIN APP INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🏟️ TurfBook App Initialized');
-    console.log('💰 Currency: PKR (Pakistani Rupee)');
-    console.log('📋 Slots: 4 (₨1,000 / ₨1,500 / ₨2,000 / ₨2,000)');
-    console.log('📌 Configure Stripe keys in js/payment.js and functions/api/');
+    console.log('⚽ TurfBook App Initialized');
+    console.log('💰 Currency: PKR | Payment: Easypaisa, JazzCash, Bank');
+    console.log('📋 Slots: ₨1,000 / ₨1,500 / ₨2,000 / ₨2,000');
 
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener('click', function (e) {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            const t = document.querySelector(this.getAttribute('href'));
+            if (t) t.scrollIntoView({behavior:'smooth',block:'start'});
         });
     });
 
-    // Close modal on overlay click
-    document.getElementById('booking-modal').addEventListener('click', (e) => {
+    document.getElementById('booking-modal').addEventListener('click', e => {
         if (e.target === e.currentTarget) closeBookingModal();
     });
 
-    // Close modal on Escape key
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeBookingModal();
     });
 
     addTypingCursor();
-    addInteractiveEffects();
     animateCounters();
+    addInteractiveEffects();
 });
 
-// ===== TYPING CURSOR =====
 function addTypingCursor() {
-    const highlight = document.querySelector('.hero-highlight');
-    if (highlight) {
-        const cursor = document.createElement('span');
-        cursor.style.cssText = `
-            display: inline-block; width: 3px; height: 1em;
-            background: var(--primary); margin-left: 5px;
-            animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-        `;
-        if (!document.getElementById('blink-style')) {
-            const style = document.createElement('style');
-            style.id = 'blink-style';
-            style.textContent = `@keyframes blink { 50% { opacity: 0; } }`;
-            document.head.appendChild(style);
-        }
-        highlight.appendChild(cursor);
-        setTimeout(() => {
-            cursor.style.animation = 'none';
-            cursor.style.opacity = '0';
-            cursor.style.transition = 'opacity 0.5s';
-        }, 3000);
+    const h = document.querySelector('.hero-highlight');
+    if (!h) return;
+    const c = document.createElement('span');
+    c.style.cssText = 'display:inline-block;width:3px;height:1em;background:var(--primary);margin-left:5px;animation:blink 1s step-end infinite;vertical-align:text-bottom;';
+    if (!document.getElementById('blink-style')) {
+        const s = document.createElement('style');
+        s.id = 'blink-style';
+        s.textContent = '@keyframes blink{50%{opacity:0}}';
+        document.head.appendChild(s);
     }
+    h.appendChild(c);
+    setTimeout(() => { c.style.animation='none'; c.style.opacity='0'; c.style.transition='opacity 0.5s'; }, 3000);
 }
 
-// ===== INTERACTIVE EFFECTS =====
-function addInteractiveEffects() {
-    const ctaButton = document.querySelector('.cta-button');
-    if (ctaButton) {
-        ctaButton.addEventListener('mousemove', (e) => {
-            const rect = ctaButton.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            ctaButton.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-        });
-        ctaButton.addEventListener('mouseleave', () => {
-            ctaButton.style.transform = 'translate(0, 0)';
-        });
-    }
-}
-
-// ===== COUNTER ANIMATION FOR PRICES =====
 function animateCounters() {
-    document.querySelectorAll('.slot-price .amount').forEach((el) => {
+    document.querySelectorAll('.slot-price .amount').forEach(el => {
         const target = parseInt(el.getAttribute('data-target'));
         if (!target) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        let startTime = null;
-                        const duration = 1500;
-
-                        function step(timestamp) {
-                            if (!startTime) startTime = timestamp;
-                            const progress = Math.min((timestamp - startTime) / duration, 1);
-                            const eased = 1 - Math.pow(1 - progress, 3);
-                            el.textContent = Math.floor(eased * target).toLocaleString();
-                            if (progress < 1) {
-                                requestAnimationFrame(step);
-                            } else {
-                                el.textContent = target.toLocaleString();
-                            }
-                        }
-
-                        requestAnimationFrame(step);
-                        observer.unobserve(entry.target);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    let start = null;
+                    function step(ts) {
+                        if (!start) start = ts;
+                        const p = Math.min((ts-start)/1500, 1);
+                        const eased = 1-Math.pow(1-p,3);
+                        el.textContent = Math.floor(eased*target).toLocaleString();
+                        if (p<1) requestAnimationFrame(step);
+                        else el.textContent = target.toLocaleString();
                     }
-                });
-            },
-            { threshold: 0.5 }
-        );
-
+                    requestAnimationFrame(step);
+                    observer.unobserve(e.target);
+                }
+            });
+        }, {threshold:0.5});
         observer.observe(el);
     });
+}
+
+function addInteractiveEffects() {
+    const cta = document.querySelector('.cta-button');
+    if (cta) {
+        cta.addEventListener('mousemove', e => {
+            const r = cta.getBoundingClientRect();
+            cta.style.transform = `translate(${(e.clientX-r.left-r.width/2)*0.1}px,${(e.clientY-r.top-r.height/2)*0.1}px)`;
+        });
+        cta.addEventListener('mouseleave', () => cta.style.transform = 'translate(0,0)');
+    }
 }
