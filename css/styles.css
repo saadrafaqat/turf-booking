@@ -474,3 +474,96 @@ body {
     .slot-details { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr 1fr; }
 }
+/* ===== CRICKET FIELD GRAPHIC ===== */
+.cricket-field {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fieldGlow 3s ease-in-out infinite;
+}
+@keyframes fieldGlow {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(108, 92, 231, 0.2)); }
+    50% { filter: drop-shadow(0 0 40px rgba(108, 92, 231, 0.5)); }
+}
+.cricket-boundary {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--primary);
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(0, 184, 148, 0.08), rgba(108, 92, 231, 0.05));
+    box-shadow: inset 0 0 30px rgba(108, 92, 231, 0.1);
+}
+.cricket-inner-circle {
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    border: 2px dashed var(--primary-light);
+    border-radius: 50%;
+    opacity: 0.6;
+}
+.cricket-pitch {
+    position: absolute;
+    width: 14%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(243, 156, 18, 0.4), rgba(243, 156, 18, 0.5), rgba(243, 156, 18, 0.4));
+    border: 2px solid rgba(243, 156, 18, 0.7);
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+.cricket-crease-top, .cricket-crease-bottom {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.7);
+}
+.cricket-stumps { display: flex; gap: 3px; align-items: flex-end; }
+.cricket-stumps span {
+    width: 3px;
+    height: 14px;
+    background: linear-gradient(to bottom, #fff, #d4a559);
+    border-radius: 1px 1px 0 0;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+}
+.cricket-stumps-top { margin-top: -6px; }
+.cricket-stumps-bottom { margin-bottom: -6px; transform: rotate(180deg); }
+.cricket-ball {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #c0392b);
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3), 0 0 15px rgba(231, 76, 60, 0.6);
+    animation: ballOrbit 8s linear infinite;
+}
+.cricket-ball::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%);
+}
+@keyframes ballOrbit {
+    0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+}
+.brand-emoji { font-size: 1.8rem; display: inline-block; }
+.footer-emoji, .receipt-emoji { font-size: 1.3rem; display: inline-block; }
+.receipt-emoji { font-size: 1.1rem; }
+@media (max-width: 768px) {
+    .cricket-field { width: 300px; height: 300px; }
+    @keyframes ballOrbit {
+        0% { transform: rotate(0deg) translateX(115px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(115px) rotate(-360deg); }
+    }
+}
