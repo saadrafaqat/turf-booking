@@ -1,0 +1,12 @@
+{
+  "name": "turf-booking",
+  "version": "3.0.0",
+  "description": "TurfBook - Easypaisa/JazzCash Turf Booking App PKR",
+  "private": true,
+  "scripts": {
+    "dev": "npx wrangler pages dev . --port 3000",
+    "deploy": "npx wrangler pages deploy ."
+  },
+  "keywords": ["turf", "booking", "easypaisa", "jazzcash", "pakistan", "pkr"],
+  "license": "MIT"
+}
