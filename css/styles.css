@@ -387,3 +387,85 @@ body {
 .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:25px; margin-top:40px; }
 .feature-card { text-align:center; padding:28px 18px; border-radius:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); transition:all 0.3s; }
 .feature-card:hover { transform:translateY(-5px); background:rgba
+.pending-animation { margin-bottom: 18px; }
+.pending-circle {
+    width: 75px; height: 75px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fdcb6e, #f39c12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 1.8rem;
+    animation: pendingPulse 2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(253,203,110,0.4);
+}
+@keyframes pendingPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(253,203,110,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(253,203,110,0.6); }
+}
+
+.pending-info {
+    padding: 16px;
+    margin-bottom: 18px;
+}
+.pending-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.88rem;
+}
+.pending-value { font-weight: 700; color: var(--primary-light); }
+.pending-status { color: var(--warning); font-weight: 700; }
+
+.payment-warning {
+    padding: 14px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border-left: 3px solid var(--warning);
+}
+.payment-warning i { color: var(--warning); font-size: 1.2rem; margin-top: 2px; }
+.payment-warning p { font-size: 0.82rem; color: var(--text-secondary); }
+.payment-warning strong { color: var(--warning); }
+
+.pending-badge {
+    background: rgba(253,203,110,0.2) !important;
+    color: var(--warning) !important;
+}
+
+/* SVG Cricket Field */
+.cricket-svg {
+    width: 350px;
+    height: 500px;
+    filter: drop-shadow(0 0 20px rgba(108,92,231,0.2));
+}
+
+/* Hot price styling */
+.hot-price { color: #ff6b6b !important; }
+.old-price {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+    margin-right: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero { flex-direction: column; padding: 100px 20px 60px; text-align: center; }
+    .hero-title { font-size: 2.5rem; }
+    .hero-image { display: none; }
+    .slots-grid { grid-template-columns: 1fr; }
+    .navbar { padding: 12px 20px; }
+    .nav-currency { display: none; }
+    .modal { padding: 22px; }
+    .form-row { grid-template-columns: 1fr; }
+    .method-cards { flex-direction: column; }
+    .button-group, .confirmation-actions { flex-direction: column; }
+    .hero-stats { justify-content: center; }
+    .hero-payment-methods { justify-content: center; }
+    .slots-section, .about-section { padding: 60px 20px; }
+    .about-content { padding: 25px 18px; }
+    .footer { padding: 30px 20px; }
+}
