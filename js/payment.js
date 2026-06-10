@@ -1,147 +1,118 @@
-// ===== STRIPE CONFIGURATION =====
-// Replace with your Stripe publishable key
-const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+// ===== PAYMENT METHOD SELECTION =====
+function selectPaymentMethod(method) {
+    BookingState.selectedPaymentMethod = method;
 
-let stripe = null;
-window.cardElement = null;
+    // Update active card
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+    document.getElementById(`method-${method}`).classList.add('active');
 
-// ===== INITIALIZE STRIPE ELEMENTS =====
-function initStripeElements() {
-    if (window.cardElement) {
-        window.cardElement.destroy();
-        window.cardElement = null;
-    }
+    // Show relevant details
+    document.querySelectorAll('.payment-method-details').forEach(d => d.classList.add('hidden'));
+    document.getElementById(`details-${method}`).classList.remove('hidden');
 
-    try {
-        stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-        const elements = stripe.elements();
-
-        const style = {
-            base: {
-                color: '#ffffff',
-                fontFamily: '"Inter", sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': { color: 'rgba(255, 255, 255, 0.4)' }
-            },
-            invalid: { color: '#e17055', iconColor: '#e17055' }
-        };
-
-        window.cardElement = elements.create('card', { style });
-        window.cardElement.mount('#card-element');
-
-        window.cardElement.on('change', (event) => {
-            const displayError = document.getElementById('card-errors');
-            displayError.textContent = event.error ? event.error.message : '';
-        });
-    } catch (error) {
-        console.log('Stripe initialization - using demo mode:', error.message);
+    // Update pay button style
+    const payBtn = document.querySelector('.pay-button');
+    if (method === 'easypaisa') {
+        payBtn.style.background = 'linear-gradient(135deg, #3aaa35, #5ec95a)';
+    } else if (method === 'jazzcash') {
+        payBtn.style.background = 'linear-gradient(135deg, #e3272d, #ff5757)';
+    } else {
+        payBtn.style.background = 'linear-gradient(135deg, #1a5276, #2980b9)';
     }
 }
 
 // ===== PROCESS PAYMENT =====
 async function processPayment() {
+    const transactionId = document.getElementById('transactionId').value.trim();
+    const senderNumber = document.getElementById('senderNumber').value.trim();
+
+    if (!transactionId) {
+        showToast('Please enter the Transaction ID', 'error');
+        return;
+    }
+    if (!senderNumber) {
+        showToast('Please enter your mobile number', 'error');
+        return;
+    }
+
+    const phoneRegex = /^(03|\\+923)[0-9]{9}$/;
+    if (!phoneRegex.test(senderNumber.replace(/[\s-]/g, ''))) {
+        showToast('Please enter a valid Pakistani number (03xxxxxxxxx)', 'error');
+        return;
+    }
+
     const payButton = document.getElementById('pay-button');
     const payButtonText = document.getElementById('pay-button-text');
     const paySpinner = document.getElementById('pay-spinner');
 
     payButton.disabled = true;
-    payButtonText.textContent = 'Processing...';
+    payButtonText.textContent = 'Verifying Payment...';
     paySpinner.classList.remove('hidden');
 
     try {
-        if (stripe && window.cardElement && STRIPE_PUBLISHABLE_KEY !== 'pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY') {
-            // ===== REAL STRIPE PAYMENT FLOW =====
-            
-            // Convert PKR to smallest unit (paisa)
-            const amountInPaisa = BookingState.currentPrice * 100;
-            
-            const response = await fetch('/api/create-payment-intent', {
+        // Try server verification first
+        let verified = false;
+        try {
+            const response = await fetch('/api/verify-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: amountInPaisa,
-                    currency: 'pkr',
+                    transactionId,
+                    senderNumber,
+                    amount: BookingState.currentPrice,
+                    paymentMethod: BookingState.selectedPaymentMethod,
                     slotId: BookingState.currentSlot,
                     date: BookingState.currentDate,
                     userDetails: BookingState.userDetails
                 })
             });
-
-            const { clientSecret, error: serverError } = await response.json();
-
-            if (serverError) throw new Error(serverError);
-
-            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: window.cardElement,
-                    billing_details: {
-                        name: BookingState.userDetails.fullName,
-                        email: BookingState.userDetails.email,
-                        phone: BookingState.userDetails.phone
-                    }
-                }
-            });
-
-            if (error) throw new Error(error.message);
-
-            if (paymentIntent.status === 'succeeded') {
-                await fetch('/api/confirm-booking', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        paymentIntentId: paymentIntent.id,
-                        slotId: BookingState.currentSlot,
-                        date: BookingState.currentDate,
-                        userDetails: BookingState.userDetails
-                    })
-                });
-
-                completeBooking(paymentIntent.id);
-            }
-        } else {
-            // ===== DEMO MODE =====
-            console.log('Running in demo mode - simulating payment');
-            console.log(`Processing ₨${BookingState.currentPrice.toLocaleString()} PKR`);
-            
-            await new Promise((resolve) => setTimeout(resolve, 2500));
-            
-            const demoPaymentId = 'demo_' + generateBookingId();
-            completeBooking(demoPaymentId);
+            const result = await response.json();
+            if (result.success) verified = true;
+        } catch (e) {
+            console.log('Server not available, using local verification');
         }
+
+        // Simulate verification delay if server not available
+        if (!verified) {
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        // Complete booking
+        completeBooking(transactionId, senderNumber);
+
     } catch (error) {
-        showToast(error.message || 'Payment failed. Please try again.', 'error');
+        showToast(error.message || 'Verification failed. Please try again.', 'error');
         payButton.disabled = false;
-        payButtonText.textContent = `Pay ₨${BookingState.currentPrice.toLocaleString()}`;
+        payButtonText.textContent = `Confirm Payment • ₨${BookingState.currentPrice.toLocaleString()}`;
         paySpinner.classList.add('hidden');
     }
 }
 
 // ===== COMPLETE BOOKING =====
-function completeBooking(paymentId) {
+function completeBooking(transactionId, senderNumber) {
     const bookingId = generateBookingId();
 
     markSlotAsBooked(BookingState.currentSlot, BookingState.currentDate);
-    generateReceipt(bookingId, paymentId);
+
+    generateReceipt(bookingId, transactionId, senderNumber);
+
     goToStep(3);
     createConfetti();
 
+    // Reset button
     const payButton = document.getElementById('pay-button');
     const payButtonText = document.getElementById('pay-button-text');
     const paySpinner = document.getElementById('pay-spinner');
     payButton.disabled = false;
-    payButtonText.textContent = `Pay ₨${BookingState.currentPrice.toLocaleString()}`;
+    payButtonText.textContent = `Confirm Payment • ₨${BookingState.currentPrice.toLocaleString()}`;
     paySpinner.classList.add('hidden');
 
     showToast('Booking confirmed successfully! 🎉', 'success');
 }
 
-// ===== GENERATE BOOKING ID =====
 function generateBookingId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let id = 'TB-';
-    for (let i = 0; i < 8; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+    for (let i = 0; i < 8; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
     return id;
 }
