@@ -1,0 +1,8 @@
+name = "turf-booking"
+compatibility_date = "2024-01-01"
+
+# Optional: KV for persistent bookings
+# npx wrangler kv:namespace create BOOKINGS
+# [[kv_namespaces]]
+# binding = "BOOKINGS"
+# id = "YOUR_KV_NAMESPACE_ID"
