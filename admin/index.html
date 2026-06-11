@@ -3,59 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CricTurf Admin Panel</title>
+<title>CricTurf Admin - Payment Verification</title>
 <link rel="stylesheet" href="../css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 body { padding: 80px 20px 40px; }
-.admin-login { max-width: 420px; margin: 60px auto; padding: 35px; border-radius: 20px; }
-.admin-login h2 { text-align: center; margin-bottom: 8px; font-size: 1.6rem; color: white; }
+.admin-login { max-width: 400px; margin: 80px auto; padding: 35px; border-radius: 20px; }
+.admin-login h2 { text-align: center; margin-bottom: 8px; color: white; font-size: 1.6rem; }
 .admin-login p { text-align: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 25px; }
-.form-group { margin-bottom: 16px; }
+.form-group { margin-bottom: 15px; }
 .form-group label { display: block; color: rgba(255,255,255,0.7); font-size: 0.82rem; margin-bottom: 6px; }
-.admin-input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: white; font-family: 'Inter'; font-size: 0.95rem; box-sizing: border-box; }
-.admin-input:focus { outline: none; border-color: #6c5ce7; }
-.login-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border: none; border-radius: 12px; font-family: 'Inter'; font-size: 1rem; font-weight: 600; cursor: pointer; }
-.login-error { display: none; background: rgba(225,112,85,0.15); border: 1px solid rgba(225,112,85,0.3); color: #e17055; padding: 10px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 16px; text-align: center; }
+.admin-input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: white; font-family: 'Inter'; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
+.admin-input:focus { border-color: #6c5ce7; }
+.login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border: none; border-radius: 12px; font-family: 'Inter'; font-weight: 600; cursor: pointer; font-size: 1rem; margin-top: 8px; }
+.login-error { display: none; background: rgba(225,112,85,0.15); border: 1px solid rgba(225,112,85,0.3); color: #e17055; padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 15px; text-align: center; }
 .login-error.show { display: block; }
-.admin-header { text-align: center; margin-bottom: 30px; }
-.admin-header h1 { font-size: 2rem; color: white; }
-.admin-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; }
-.logout-btn { padding: 8px 18px; background: rgba(225,112,85,0.15); color: #e17055; border: 1px solid rgba(225,112,85,0.3); border-radius: 10px; font-family: 'Inter'; font-weight: 600; cursor: pointer; }
-.bookings-container { max-width: 900px; margin: 0 auto; }
-.booking-card { padding: 20px; border-radius: 16px; margin-bottom: 15px; border-left: 4px solid #fdcb6e; }
+
+.pending-bookings { max-width: 950px; margin: 0 auto; }
+.booking-card { padding: 22px; border-radius: 16px; margin-bottom: 15px; border-left: 4px solid #fdcb6e; }
 .booking-card.confirmed { border-left-color: #00b894; }
 .booking-card.rejected { border-left-color: #e17055; }
-.booking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.booking-id { font-family: monospace; font-size: 1rem; color: #a29bfe; font-weight: 700; }
-.booking-status { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+.booking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+.booking-id { font-family: monospace; font-size: 1.05rem; color: #a29bfe; font-weight: 700; }
+.booking-status { padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
 .booking-status.pending { background: rgba(253,203,110,0.2); color: #fdcb6e; }
 .booking-status.confirmed { background: rgba(0,184,148,0.2); color: #00b894; }
 .booking-status.rejected { background: rgba(225,112,85,0.2); color: #e17055; }
-.booking-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-.detail-row { font-size: 0.85rem; color: white; }
-.detail-row .label { color: rgba(255,255,255,0.6); display: block; font-size: 0.72rem; }
-.detail-row .value { font-weight: 600; }
-.amount-match { padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 12px; }
+.booking-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.detail-row { font-size: 0.87rem; color: white; }
+.detail-row .lbl { color: rgba(255,255,255,0.55); display: block; font-size: 0.75rem; margin-bottom: 2px; }
+.detail-row .val { font-weight: 600; }
+.amount-match { padding: 11px 14px; border-radius: 10px; font-size: 0.88rem; margin-bottom: 14px; }
 .amount-match.match { background: rgba(0,184,148,0.15); color: #00b894; }
 .amount-match.mismatch { background: rgba(225,112,85,0.15); color: #e17055; }
-.booking-actions { display: flex; gap: 10px; }
-.confirm-btn { flex: 1; padding: 10px; background: linear-gradient(135deg, #00b894, #00d4a8); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
-.reject-btn { flex: 1; padding: 10px; background: rgba(225,112,85,0.2); color: #e17055; border: 1px solid rgba(225,112,85,0.3); border-radius: 10px; font-weight: 600; cursor: pointer; }
-.no-bookings { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6); }
-.no-bookings i { font-size: 3rem; margin-bottom: 15px; display: block; }
-.refresh-btn { display: flex; align-items: center; gap: 8px; margin: 0 auto 20px; padding: 10px 24px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; border-radius: 12px; font-weight: 600; cursor: pointer; }
-.stats-bar { display: flex; gap: 15px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap; }
-.stat-box { padding: 15px 25px; border-radius: 12px; text-align: center; }
-.stat-box .num { font-size: 1.8rem; font-weight: 800; display: block; }
-.stat-box .lbl { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+.booking-actions { display: flex; gap: 10px; margin-top: 12px; }
+.confirm-btn { flex: 1; padding: 11px; background: linear-gradient(135deg, #00b894, #00d4a8); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+.reject-btn { flex: 1; padding: 11px; background: rgba(225,112,85,0.15); color: #e17055; border: 1px solid rgba(225,112,85,0.3); border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+.no-bookings { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.5); }
+.no-bookings i { font-size: 3.5rem; margin-bottom: 18px; display: block; opacity: 0.4; }
+.refresh-btn { display: flex; align-items: center; gap: 8px; margin: 0 auto 25px; padding: 11px 26px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; border-radius: 12px; font-weight: 600; cursor: pointer; }
+.stats-bar { display: flex; gap: 16px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap; }
+.stat-box { padding: 17px 28px; border-radius: 14px; text-align: center; min-width: 100px; }
+.stat-box .num { font-size: 2rem; font-weight: 800; display: block; }
+.stat-box .lbl { font-size: 0.76rem; color: rgba(255,255,255,0.6); }
 .pending-stat .num { color: #fdcb6e; }
 .confirmed-stat .num { color: #00b894; }
 .rejected-stat .num { color: #e17055; }
 .hidden { display: none !important; }
 .gradient-text { background: linear-gradient(135deg, #6c5ce7, #a29bfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-@media(max-width:600px) { .booking-details { grid-template-columns: 1fr; } .booking-actions { flex-direction: column; } }
+@media(max-width:650px) { .booking-details { grid-template-columns: 1fr; } .booking-actions { flex-direction: column; } .admin-login { margin: 40px 15px; } }
 </style>
 </head>
 <body>
@@ -70,29 +67,40 @@ body { padding: 80px 20px 40px; }
     <div class="nav-links"><a href="../index.html" class="nav-link">← Back to Site</a></div>
 </nav>
 
-<!-- LOGIN -->
+<!-- LOGIN FORM -->
 <div class="admin-login glass-effect" id="admin-login">
     <h2>🔐 Admin Login</h2>
     <p>Authorized personnel only</p>
-    <div class="login-error" id="login-error">Invalid credentials</div>
+    
+    <div class="login-error" id="login-error"><span id="login-error-msg">Invalid credentials</span></div>
+    
     <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="admin-username" class="admin-input" placeholder="Username">
+        <label for="admin-username">Username</label>
+        <input type="text" id="admin-username" class="admin-input" placeholder="Enter username" autocomplete="username">
     </div>
+    
     <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="admin-password" class="admin-input" placeholder="Password">
+        <label for="admin-password">Password</label>
+        <input type="password" id="admin-password" class="admin-input" placeholder="Enter password" autocomplete="current-password">
     </div>
-    <button class="login-btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+    
+    <button class="login-btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login to Dashboard</button>
+    
+    <p style="text-align:center;color:rgba(255,255,255,0.4);font-size:0.73rem;margin-top:15px;">
+        Default: admin / cricturf2024
+    </p>
 </div>
 
 <!-- DASHBOARD -->
-<div class="bookings-container hidden" id="admin-dashboard">
-    <div class="admin-topbar">
+<div class="pending-bookings hidden" id="admin-dashboard">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:30px;flex-wrap:wrap;gap:15px;">
         <div>
-            <h1 style="color:white;font-size:1.6rem;margin:0;">🏏 Payment <span class="gradient-text">Verification</span></h1>
+            <h1 style="color:white;font-size:1.7rem;margin:0;"><i class="fas fa-shield-alt" style="margin-right:8px;"></i>Payment <span class="gradient-text">Verification</span></h1>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;margin-top:5px;">Confirm bookings after checking payments</p>
         </div>
-        <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button class="logout-btn" id="logout-btn" style="padding:8px 18px;background:rgba(225,112,85,0.15);color:#e17055;border:1px solid rgba(225,112,85,0.3);border-radius:10px;font-family:'Inter';font-weight:600;cursor:pointer;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
     </div>
 
     <div class="stats-bar">
@@ -101,42 +109,57 @@ body { padding: 80px 20px 40px; }
         <div class="stat-box rejected-stat glass-effect-dark"><span class="num" id="stat-rejected">0</span><span class="lbl">Rejected</span></div>
     </div>
 
-    <button class="refresh-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+    <button class="refresh-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh Bookings</button>
+
     <div id="bookings-list"></div>
 </div>
 
 <script>
+// ADMIN CREDENTIALS - CHANGE THESE!
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'cricturf2024';
 
-document.getElementById('login-btn').addEventListener('click', login);
-document.getElementById('admin-password').addEventListener('keypress', e => { if(e.key==='Enter') login(); });
-document.getElementById('admin-username').addEventListener('keypress', e => { if(e.key==='Enter') login(); });
+// State
+let loginAttempts = 0;
+let lockoutUntil = 0;
 
-function login() {
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('admin-password').addEventListener('keypress', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('admin-username').addEventListener('keypress', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('logout-btn').addEventListener('click', () => { sessionStorage.removeItem('adminSession'); location.reload(); });
+document.getElementById('refresh-btn').addEventListener('click', loadBookings);
+
+function doLogin() {
     const u = document.getElementById('admin-username').value.trim();
     const p = document.getElementById('admin-password').value;
-    const err = document.getElementById('login-error');
+    const errBox = document.getElementById('login-error');
+
+    // Check lockout
+    if (Date.now() < lockoutUntil) {
+        errBox.innerHTML = `Too many attempts. Try again in ${Math.ceil((lockoutUntil - Date.now())/60000)} min.`;
+        errBox.classList.add('show');
+        return;
+    }
 
     if (u === ADMIN_USERNAME && p === ADMIN_PASSWORD) {
-        sessionStorage.setItem('adminLogged', 'true');
+        sessionStorage.setItem('adminSession', Date.now().toString());
         document.getElementById('admin-login').classList.add('hidden');
         document.getElementById('admin-dashboard').classList.remove('hidden');
         loadBookings();
+        loginAttempts = 0;
     } else {
-        err.textContent = 'Invalid username or password';
-        err.classList.add('show');
+        loginAttempts++;
+        errBox.innerHTML = `<i class="fas fa-times-circle"></i> Invalid username or password (${loginAttempts}/5)`;
+        errBox.classList.add('show');
+        
+        if (loginAttempts >= 5) {
+            lockoutUntil = Date.now() + (5 * 60 * 1000);
+            errBox.innerHTML = 'Locked out for 5 minutes';
+        }
     }
 }
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-    sessionStorage.removeItem('adminLogged');
-    location.reload();
-});
-
-document.getElementById('refresh-btn').addEventListener('click', loadBookings);
-
-if (sessionStorage.getItem('adminLogged') === 'true') {
+if (sessionStorage.getItem('adminSession')) {
     document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('admin-dashboard').classList.remove('hidden');
     loadBookings();
@@ -147,84 +170,123 @@ async function loadBookings() {
     list.innerHTML = '<div class="no-bookings"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
 
     try {
-        const res = await fetch('/api/get-bookings');
-        const text = await res.text();
+        const res = await fetch('/api/get-slot-states?date=all');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        
         let data;
-        try { data = JSON.parse(text); }
-        catch { throw new Error('API returned invalid response. Check Cloudflare Functions setup.'); }
+        try { data = await res.json(); } 
+        catch(e) { throw new Error('Invalid JSON response'); }
 
-        document.getElementById('stat-pending').textContent = data.pending || 0;
-        document.getElementById('stat-confirmed').textContent = data.confirmed || 0;
-        document.getElementById('stat-rejected').textContent = data.rejected || 0;
+        let allBookings = [];
+        if (data.bookings) allBookings = data.bookings;
 
-        if (!data.bookings || !data.bookings.length) {
+        // Update stats
+        const pending = allBookings.filter(b => b.status === 'pending').length;
+        const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
+        const rejected = allBookings.filter(b => b.status === 'rejected').length;
+        
+        document.getElementById('stat-pending').textContent = pending;
+        document.getElementById('stat-confirmed').textContent = confirmed;
+        document.getElementById('stat-rejected').textContent = rejected;
+
+        if (!allBookings.length) {
             list.innerHTML = '<div class="no-bookings"><i class="fas fa-inbox"></i><p>No bookings yet</p></div>';
             return;
         }
 
-        list.innerHTML = data.bookings.map(b => {
+        // Sort newest first
+        allBookings.sort((a,b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+        let html = '';
+        allBookings.forEach(b => {
             const match = parseInt(b.paidAmount) === parseInt(b.expectedAmount);
             const status = b.status || 'pending';
-            return `
+            const ts = b.submittedAt ? new Date(b.submittedAt).toLocaleString('en-PK') : '-';
+            
+            html += `
             <div class="booking-card glass-effect ${status}">
                 <div class="booking-header">
                     <span class="booking-id">${b.bookingId}</span>
                     <span class="booking-status ${status}">${status.toUpperCase()}</span>
                 </div>
                 <div class="booking-details">
-                    <div class="detail-row"><span class="label">Name</span><span class="value">${b.userDetails?.fullName||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Phone</span><span class="value">${b.userDetails?.phone||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Email</span><span class="value">${b.userDetails?.email||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Team</span><span class="value">${b.userDetails?.teamName||'N/A'}</span></div>
-                    <div class="detail-row"><span class="label">Turf</span><span class="value">Turf ${b.turfNumber}</span></div>
-                    <div class="detail-row"><span class="label">Date</span><span class="value">${b.date}</span></div>
-                    <div class="detail-row"><span class="label">Slot</span><span class="value">${b.time}</span></div>
-                    <div class="detail-row"><span class="label">Players</span><span class="value">${b.userDetails?.players||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Method</span><span class="value">${b.paymentMethod||'-'}</span></div>
-                    <div class="detail-row"><span class="label">TXN ID</span><span class="value" style="font-family:monospace">${b.transactionId||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Sender</span><span class="value">${b.senderNumber||'-'}</span></div>
-                    <div class="detail-row"><span class="label">Submitted</span><span class="value">${new Date(b.submittedAt).toLocaleString()}</span></div>
+                    <div class="detail-row"><span class="lbl">Name</span><span class="val">${b.userDetails?.fullName||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Phone</span><span class="val">${b.userDetails?.phone||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Email</span><span class="val">${b.userDetails?.email||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Team</span><span class="val">${b.userDetails?.teamName||'N/A'}</span></div>
+                    <div class="detail-row"><span class="lbl">Turf</span><span class="val">Turf ${b.turfNumber}</span></div>
+                    <div class="detail-row"><span class="lbl">Slot</span><span class="val">${b.time||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Date</span><span class="val">${b.date||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Payment</span><span class="val">${b.paymentMethod||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">TXN ID</span><span class="val" style="font-family:monospace;font-size:0.82rem">${b.transactionId||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Sender</span><span class="val">${b.senderNumber||'-'}</span></div>
+                    <div class="detail-row"><span class="lbl">Submitted</span><span class="val">${ts}</span></div>
                 </div>
+                
                 <div class="amount-match ${match?'match':'mismatch'}">
-                    ${match ? `<i class="fas fa-check-circle"></i> AMOUNT MATCH: ₨${b.paidAmount} = ₨${b.expectedAmount}` : `<i class="fas fa-times-circle"></i> MISMATCH: Sent ₨${b.paidAmount} ≠ Expected ₨${b.expectedAmount}`}
+                    ${match ? '<i class="fas fa-check-circle"></i> Amount MATCHES ✓' : '<i class="fas fa-times-circle"></i> Amount MISMATCH ✗'}
+                    &nbsp;|&nbsp; Expected: ₨${parseInt(b.expectedAmount||0).toLocaleString()} | Sent: ₨${parseInt(b.paidAmount||0).toLocaleString()}
                 </div>
+
                 ${status === 'pending' ? `
                 <div class="booking-actions">
-                    <button class="confirm-btn" onclick="verifyBooking('${b.bookingId}','confirmed')"><i class="fas fa-check"></i> Confirm</button>
-                    <button class="reject-btn" onclick="verifyBooking('${b.bookingId}','rejected')"><i class="fas fa-times"></i> Reject</button>
-                </div>` : `<p style="color:rgba(255,255,255,0.5);font-size:0.8rem;font-style:italic;">Already ${status}</p>`}
+                    <button class="confirm-btn" onclick="processBooking('${b.bookingId}','confirmed')">✅ Confirm & Activate QR</button>
+                    <button class="reject-btn" onclick="processBooking('${b.bookingId}','rejected')">❌ Reject</button>
+                </div>` : `
+                <p style="color:rgba(255,255,255,0.45);font-size:0.83rem;font-style:italic;margin-top:8px;">
+                    Already ${status} on ${new Date(b.verifiedAt||b.submittedAt).toLocaleDateString()}
+                </p>`}
             </div>`;
-        }).join('');
+        });
 
-    } catch (err) {
-        list.innerHTML = `<div class="no-bookings"><i class="fas fa-exclamation-triangle"></i><p>Error: ${err.message}</p></div>`;
+        list.innerHTML = html;
+
+    } catch(err) {
+        console.error(err);
+        list.innerHTML = `<div class="no-bookings"><i class="fas fa-exclamation-triangle"></i><p>Error loading bookings:<br>${err.message}</p></div>`;
     }
 }
 
-async function verifyBooking(bookingId, action) {
-    if (!confirm(`${action.toUpperCase()} booking ${bookingId}?`)) return;
+async function processBooking(bookingId, action) {
+    if(!confirm(`${action.toUpperCase()} booking ${bookingId}? This cannot be undone.`)) return;
+
     try {
-        const res = await fetch('/api/verify-booking', {
+        // Try confirm-booking endpoint first
+        let res = await fetch('/api/confirm-booking', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ bookingId, action })
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({bookingId, action})
         });
-        const data = await res.json();
-        if (data.success) {
-            alert(`Booking ${action}!`);
+        
+        let data = await res.json();
+
+        // If that fails, try verify-payment as fallback
+        if (!data.success && !res.ok) {
+            res = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({bookingId, action})
+            });
+            data = await res.json();
+        }
+
+        if(data.success) {
+            alert(`✅ Booking ${action} successfully!`);
             loadBookings();
         } else {
-            alert('Error: ' + data.error);
+            alert('Error: ' + (data.error || 'Unknown error'));
         }
-    } catch (e) {
-        alert('Error: ' + e.message);
+    } catch(e) {
+        alert('Network error: ' + e.message);
     }
 }
 
+// Auto-refresh every 30s when dashboard is visible
 setInterval(() => {
-    if (!document.getElementById('admin-dashboard').classList.contains('hidden')) loadBookings();
+    if(!document.getElementById('admin-dashboard').classList.contains('hidden')){
+        loadBookings();
+    }
 }, 30000);
 </script>
-
 </body>
 </html>
