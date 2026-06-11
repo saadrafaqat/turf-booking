@@ -5,7 +5,8 @@ const BookingState = {
     currentDate: '',
     selectedPaymentMethod: 'easypaisa',
     userDetails: {},
-    bookedSlots: {}
+    bookedSlots: {},
+    screenshotData: null
 };
 
 const SLOT_PRICES = { 1: 1000, 2: 1500, 3: 100, 4: 2000 };
@@ -30,7 +31,7 @@ async function loadSlotStates() {
         const date = BookingState.currentDate;
         const res = await fetch(`/api/get-slot-states?date=${date}`);
         const data = await res.json();
-        
+
         if (data.slots) {
             BookingState.bookedSlots = data.slots;
             updateSlotUI(data.slots);
@@ -92,12 +93,10 @@ function openBookingModal(slotNum, time, price) {
     BookingState.currentTime = time;
     BookingState.currentPrice = price;
 
-    // Update summary
     const dateInput = document.getElementById('booking-date');
-    const selectedDate = dateInput.value;
-    BookingState.currentDate = selectedDate;
+    BookingState.currentDate = dateInput.value;
 
-    const dateObj = new Date(selectedDate + 'T00:00:00');
+    const dateObj = new Date(BookingState.currentDate + 'T00:00:00');
     const formatted = dateObj.toLocaleDateString('en-PK', {
         weekday: 'long',
         year: 'numeric',
@@ -109,15 +108,11 @@ function openBookingModal(slotNum, time, price) {
     document.getElementById('summary-time').textContent = time;
     document.getElementById('summary-price').textContent = `₨${price.toLocaleString()}`;
 
-    // Show modal
     const modal = document.getElementById('booking-modal');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Reset to step 1
     goToStep(1);
-
-    // Clear form
     document.getElementById('user-details-form').reset();
 }
 
@@ -125,19 +120,15 @@ function closeModal() {
     const modal = document.getElementById('booking-modal');
     modal.classList.remove('active');
     document.body.style.overflow = '';
-    
-    // Reset steps
+
     goToStep(1);
-    
-    // Clear transaction fields
-    const txnField = document.getElementById('transactionId');
-    const senderField = document.getElementById('senderNumber');
-    const paidField = document.getElementById('paidAmount');
-    if (txnField) txnField.value = '';
-    if (senderField) senderField.value = '';
-    if (paidField) paidField.value = '';
-    
-    // Clear screenshot
+
+    const fields = ['transactionId', 'senderNumber', 'paidAmount'];
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
     clearScreenshot();
 }
 
@@ -145,17 +136,14 @@ function goToStep(step) {
     for (let i = 1; i <= 3; i++) {
         const stepEl = document.getElementById(`step-${i}`);
         const indicatorEl = document.getElementById(`step-${i}-indicator`);
-        
+
         if (stepEl) stepEl.classList.add('hidden');
-        if (indicatorEl) {
-            indicatorEl.classList.remove('active', 'completed');
-        }
+        if (indicatorEl) indicatorEl.classList.remove('active', 'completed');
     }
 
     const targetStep = document.getElementById(`step-${step}`);
     if (targetStep) targetStep.classList.remove('hidden');
 
-    // Update indicators
     for (let i = 1; i < step; i++) {
         const ind = document.getElementById(`step-${i}-indicator`);
         if (ind) ind.classList.add('completed');
@@ -170,11 +158,9 @@ function goToStep(step) {
 function initModalEvents() {
     // Close button
     const closeBtn = document.getElementById('modal-close-btn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-    // Click outside to close
+    // Click outside modal to close
     const overlay = document.getElementById('booking-modal');
     if (overlay) {
         overlay.addEventListener('click', function(e) {
@@ -193,34 +179,24 @@ function initModalEvents() {
 
     // Back button
     const backBtn = document.getElementById('back-to-step1-btn');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => goToStep(1));
-    }
+    if (backBtn) backBtn.addEventListener('click', () => goToStep(1));
 
     // Payment method selection
     ['easypaisa', 'jazzcash', 'bank'].forEach(method => {
         const card = document.getElementById(`method-${method}`);
-        if (card) {
-            card.addEventListener('click', () => selectPaymentMethod(method));
-        }
+        if (card) card.addEventListener('click', () => selectPaymentMethod(method));
     });
 
-    // Pay button
+    // Pay / Submit button
     const payBtn = document.getElementById('pay-button');
-    if (payBtn) {
-        payBtn.addEventListener('click', handlePaymentSubmit);
-    }
+    if (payBtn) payBtn.addEventListener('click', handlePaymentSubmit);
 
     // Screenshot upload
     const screenshotInput = document.getElementById('screenshot');
-    if (screenshotInput) {
-        screenshotInput.addEventListener('change', handleScreenshotUpload);
-    }
+    if (screenshotInput) screenshotInput.addEventListener('change', handleScreenshotUpload);
 
     const removeScreenshotBtn = document.getElementById('remove-screenshot-btn');
-    if (removeScreenshotBtn) {
-        removeScreenshotBtn.addEventListener('click', clearScreenshot);
-    }
+    if (removeScreenshotBtn) removeScreenshotBtn.addEventListener('click', clearScreenshot);
 
     // Done button
     const doneBtn = document.getElementById('done-btn');
@@ -232,17 +208,13 @@ function initModalEvents() {
         });
     }
 
-    // Download button
+    // Download receipt
     const downloadBtn = document.getElementById('download-btn');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', downloadReceipt);
-    }
+    if (downloadBtn) downloadBtn.addEventListener('click', downloadReceipt);
 
-    // Share button
+    // WhatsApp share
     const shareBtn = document.getElementById('share-btn');
-    if (shareBtn) {
-        shareBtn.addEventListener('click', shareOnWhatsApp);
-    }
+    if (shareBtn) shareBtn.addEventListener('click', shareOnWhatsApp);
 }
 
 function handleStep1Submit() {
@@ -276,7 +248,7 @@ function handleStep1Submit() {
 
     BookingState.userDetails = { fullName, phone, email, players, teamName };
 
-    // Update payment step
+    // Update payment step summary
     const dateObj = new Date(BookingState.currentDate + 'T00:00:00');
     const formatted = dateObj.toLocaleDateString('en-PK', {
         weekday: 'short',
@@ -290,7 +262,7 @@ function handleStep1Submit() {
     document.getElementById('payment-customer').textContent = fullName;
     document.getElementById('payment-total').textContent = `₨${BookingState.currentPrice.toLocaleString()}`;
 
-    // Update amount displays
+    // Update amount in all payment method sections
     const amountStr = `₨${BookingState.currentPrice.toLocaleString()}`;
     ['ep', 'jc', 'bk'].forEach(prefix => {
         const el = document.getElementById(`${prefix}-amount`);
@@ -311,18 +283,15 @@ function handleStep1Submit() {
 function selectPaymentMethod(method) {
     BookingState.selectedPaymentMethod = method;
 
-    // Update UI
     ['easypaisa', 'jazzcash', 'bank'].forEach(m => {
         const card = document.getElementById(`method-${m}`);
         const details = document.getElementById(`details-${m}`);
-        
         if (card) card.classList.remove('active');
         if (details) details.classList.add('hidden');
     });
 
     const selectedCard = document.getElementById(`method-${method}`);
     const selectedDetails = document.getElementById(`details-${method}`);
-    
     if (selectedCard) selectedCard.classList.add('active');
     if (selectedDetails) selectedDetails.classList.remove('hidden');
 }
@@ -341,11 +310,11 @@ function handleScreenshotUpload(e) {
         const preview = document.getElementById('screenshot-preview');
         const img = document.getElementById('screenshot-img');
         const label = document.querySelector('.screenshot-label');
-        
+
         if (img) img.src = event.target.result;
         if (preview) preview.classList.remove('hidden');
         if (label) label.style.display = 'none';
-        
+
         BookingState.screenshotData = event.target.result;
     };
     reader.readAsDataURL(file);
@@ -356,12 +325,12 @@ function clearScreenshot() {
     const img = document.getElementById('screenshot-img');
     const input = document.getElementById('screenshot');
     const label = document.querySelector('.screenshot-label');
-    
+
     if (preview) preview.classList.add('hidden');
     if (img) img.src = '';
     if (input) input.value = '';
     if (label) label.style.display = '';
-    
+
     BookingState.screenshotData = null;
 }
 
@@ -381,7 +350,7 @@ async function handlePaymentSubmit() {
         return;
     }
     if (!senderNumber || !/^03\d{9}$/.test(senderNumber.replace(/[-\s]/g, ''))) {
-        showToast("Please enter a valid sender's phone number", 'error');
+        showToast("Please enter a valid sender's phone number (03XXXXXXXXX)", 'error');
         document.getElementById('senderNumber').focus();
         return;
     }
@@ -395,13 +364,13 @@ async function handlePaymentSubmit() {
         return;
     }
 
-    // Show loading
+    // Show loading state
     const payBtn = document.getElementById('pay-button');
     const payText = document.getElementById('pay-button-text');
     const spinner = document.getElementById('pay-spinner');
-    
+
     payBtn.disabled = true;
-    payText.textContent = 'Submitting...';
+    if (payText) payText.textContent = 'Submitting...';
     if (spinner) spinner.classList.remove('hidden');
 
     try {
@@ -426,8 +395,7 @@ async function handlePaymentSubmit() {
             expiresAt: expiryTime.toISOString()
         };
 
-        // Submit to API
-        let apiSuccess = false;
+        // Try to submit to API
         try {
             const res = await fetch('/api/submit-booking', {
                 method: 'POST',
@@ -435,19 +403,21 @@ async function handlePaymentSubmit() {
                 body: JSON.stringify(bookingData)
             });
             const result = await res.json();
-            if (result.success) apiSuccess = true;
+            if (!result.success) {
+                throw new Error(result.error || 'API error');
+            }
         } catch (apiErr) {
-            console.warn('API not available, using localStorage fallback');
+            console.warn('API not available, using localStorage fallback:', apiErr.message);
         }
 
         // Always save to localStorage as backup
         saveToLocalStorage(bookingData);
 
-        // Show receipt
-        showPendingReceipt(bookingData, expiryTime);
-
         // Mark slot as pending in UI
         markSlotAsPending(BookingState.currentSlot);
+
+        // Show pending receipt
+        showPendingReceipt(bookingData, expiryTime);
 
         goToStep(3);
 
@@ -456,18 +426,18 @@ async function handlePaymentSubmit() {
         console.error(err);
     } finally {
         payBtn.disabled = false;
-        payText.textContent = 'Submit for Verification';
+        if (payText) payText.textContent = 'Submit for Verification';
         if (spinner) spinner.classList.add('hidden');
     }
 }
 
 function saveToLocalStorage(bookingData) {
-    // Save booking
+    // Save to all bookings list
     const bookings = JSON.parse(localStorage.getItem('allBookings') || '[]');
     bookings.push(bookingData);
     localStorage.setItem('allBookings', JSON.stringify(bookings));
 
-    // Save slot state
+    // Save slot state for this date
     const allSlots = JSON.parse(localStorage.getItem('bookedSlots') || '{}');
     if (!allSlots[bookingData.date]) allSlots[bookingData.date] = {};
     allSlots[bookingData.date][bookingData.slotNumber] = 'pending';
@@ -477,7 +447,7 @@ function saveToLocalStorage(bookingData) {
 function markSlotAsPending(slotNum) {
     if (!BookingState.bookedSlots) BookingState.bookedSlots = {};
     BookingState.bookedSlots[slotNum] = 'pending';
-    
+
     const statusEl = document.getElementById(`status-${slotNum}`);
     if (statusEl) {
         statusEl.className = 'slot-status pending';
@@ -495,13 +465,15 @@ function generateBookingId() {
 }
 
 function showPendingReceipt(bookingData, expiryTime) {
-    // Fill receipt fields
     const dateObj = new Date(bookingData.date + 'T00:00:00');
     const formatted = dateObj.toLocaleDateString('en-PK', {
-        weekday: 'short', year: 'numeric',
-        month: 'short', day: 'numeric'
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
     });
 
+    // Fill receipt fields
     setEl('receipt-id', bookingData.bookingId);
     setEl('receipt-name', bookingData.userDetails.fullName);
     setEl('receipt-phone', bookingData.userDetails.phone);
@@ -510,16 +482,22 @@ function showPendingReceipt(bookingData, expiryTime) {
     setEl('receipt-time', bookingData.time);
     setEl('receipt-players', bookingData.userDetails.players + ' Players');
     setEl('receipt-team', bookingData.userDetails.teamName || 'N/A');
-    setEl('receipt-method', bookingData.paymentMethod.charAt(0).toUpperCase() + bookingData.paymentMethod.slice(1));
+    setEl('receipt-method',
+        bookingData.paymentMethod.charAt(0).toUpperCase() +
+        bookingData.paymentMethod.slice(1)
+    );
     setEl('receipt-txn', bookingData.transactionId);
     setEl('receipt-amount', `₨${bookingData.expectedAmount.toLocaleString()}`);
     setEl('receipt-timestamp', new Date().toLocaleString('en-PK'));
 
-    // Pending info
+    // Fill pending info section
     setEl('pending-id', bookingData.bookingId);
-    setEl('pending-expiry', expiryTime.toLocaleTimeString('en-PK', {
-        hour: '2-digit', minute: '2-digit'
-    }) + ' today');
+    setEl('pending-expiry',
+        expiryTime.toLocaleTimeString('en-PK', {
+            hour: '2-digit',
+            minute: '2-digit'
+        }) + ' today'
+    );
 
     // Generate QR code
     generateQRCode(bookingData.bookingId);
@@ -533,7 +511,7 @@ function setEl(id, value) {
 function generateQRCode(bookingId) {
     const container = document.getElementById('qr-container');
     if (!container) return;
-    
+
     container.innerHTML = '';
 
     try {
@@ -547,10 +525,21 @@ function generateQRCode(bookingId) {
                 correctLevel: QRCode.CorrectLevel.M
             });
         } else {
-            container.innerHTML = `<div style="width:100px;height:100px;background:rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;padding:5px;">${bookingId}</div>`;
+            container.innerHTML = `
+                <div style="
+                    width:100px;height:100px;
+                    background:rgba(255,255,255,0.1);
+                    border-radius:8px;
+                    display:flex;align-items:center;
+                    justify-content:center;
+                    font-size:0.65rem;
+                    color:rgba(255,255,255,0.5);
+                    text-align:center;padding:5px;
+                    font-family:monospace;
+                ">${bookingId}</div>`;
         }
     } catch (e) {
-        container.innerHTML = `<div style="font-size:0.7rem;padding:5px;">${bookingId}</div>`;
+        container.innerHTML = `<div style="font-size:0.7rem;padding:5px;font-family:monospace;">${bookingId}</div>`;
     }
 }
 
@@ -558,12 +547,13 @@ function downloadReceipt() {
     const receiptEl = document.getElementById('receipt');
     if (!receiptEl) return;
 
+    const bookingId = document.getElementById('receipt-id').textContent;
     const content = receiptEl.innerText;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `CricTurf-Receipt-${document.getElementById('receipt-id').textContent}.txt`;
+    a.download = `CricTurf-Receipt-${bookingId}.txt`;
     a.click();
     URL.revokeObjectURL(url);
     showToast('Receipt downloaded!', 'success');
@@ -575,8 +565,18 @@ function shareOnWhatsApp() {
     const date = document.getElementById('receipt-date').textContent;
     const time = document.getElementById('receipt-time').textContent;
     const amount = document.getElementById('receipt-amount').textContent;
+    const txn = document.getElementById('receipt-txn').textContent;
 
-    const msg = `🏏 *CricTurf Booking Submitted*\n\n📋 Booking ID: ${bookingId}\n👤 Name: ${name}\n📅 Date: ${date}\n⏰ Time: ${time}\n💰 Amount: ${amount}\n\n⏳ Status: PENDING VERIFICATION\n\nVisit cricturf.com for details`;
-    
+    const msg =
+        `🏏 *CricTurf Booking Submitted*\n\n` +
+        `📋 Booking ID: ${bookingId}\n` +
+        `👤 Name: ${name}\n` +
+        `📅 Date: ${date}\n` +
+        `⏰ Time: ${time}\n` +
+        `💰 Amount: ${amount}\n` +
+        `🔖 TXN ID: ${txn}\n\n` +
+        `⏳ Status: PENDING VERIFICATION\n` +
+        `Admin will verify your payment shortly.`;
+
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
