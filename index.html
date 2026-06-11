@@ -97,4 +97,544 @@
                 <!-- Popping crease bottom -->
                 <line x1="165" y1="360" x2="235" y2="360" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <!-- Stumps top -->
-                <rect x="193" 
+                <rect x="193" y="108" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <rect x="198.5" y="108" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <rect x="204" y="108" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <!-- Bails top -->
+                <rect x="193" y="106" width="8" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+                <rect x="201" y="106" width="8" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+                <!-- Stumps bottom -->
+                <rect x="193" y="374" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <rect x="198.5" y="374" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <rect x="204" y="374" width="3" height="18" rx="1" fill="rgba(255,255,255,0.7)"/>
+                <!-- Bails bottom -->
+                <rect x="193" y="372" width="8" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+                <rect x="201" y="372" width="8" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+                <!-- Cricket ball -->
+                <circle cx="210" cy="240" r="10" fill="#e74c3c">
+                    <animate attributeName="cy" values="240;225;240" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="210;205;210" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <!-- Ball seam -->
+                <line x1="202" y1="240" x2="218" y2="240" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                    <animate attributeName="y1" values="240;225;240" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="y2" values="240;225;240" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="x1" values="202;197;202" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="x2" values="218;213;218" dur="3s" repeatCount="indefinite"/>
+                </line>
+                <!-- Fielding positions dots -->
+                <circle cx="120" cy="180" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="280" cy="180" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="100" cy="280" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="300" cy="280" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="150" cy="350" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="250" cy="350" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="130" cy="130" r="3" fill="rgba(108,92,231,0.3)"/>
+                <circle cx="270" cy="130" r="3" fill="rgba(108,92,231,0.3)"/>
+                <!-- Bat icon -->
+                <g transform="translate(310, 400) rotate(-30)">
+                    <rect x="-4" y="-40" width="8" height="60" rx="3" fill="rgba(253,203,110,0.4)" stroke="rgba(253,203,110,0.6)" stroke-width="1"/>
+                    <rect x="-6" y="-45" width="12" height="15" rx="2" fill="rgba(253,203,110,0.3)" stroke="rgba(253,203,110,0.5)" stroke-width="1"/>
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SLOTS -->
+    <section id="slots" class="slots-section">
+        <div class="section-header fade-in-up">
+            <h2 class="section-title">Available <span class="gradient-text">Slots</span></h2>
+            <p class="section-subtitle">Choose your time and pay via Easypaisa or JazzCash</p>
+        </div>
+
+        <div class="date-picker-container glass-effect fade-in-up">
+            <label for="booking-date"><i class="fas fa-calendar-alt"></i> Select Date</label>
+            <input type="date" id="booking-date" class="date-input">
+        </div>
+
+        <div class="slots-grid" id="slots-container">
+            <!-- Slot 1 -->
+            <div class="slot-card glass-effect fade-in-up" data-slot="1" style="--delay:0.1s">
+                <div class="slot-status available" id="status-1"><i class="fas fa-check-circle"></i><span>Available</span></div>
+                <div class="slot-icon morning"><i class="fas fa-cloud-sun"></i></div>
+                <h3 class="slot-title">Morning Session</h3>
+                <div class="slot-time"><i class="fas fa-clock"></i><span>6:00 AM - 8:00 AM</span></div>
+                <div class="slot-details">
+                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Cricket Pitch</span></div>
+                    <div class="detail-item"><i class="fas fa-tint"></i><span>Fresh Morning Dew</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-parking"></i><span>Free Parking</span></div>
+                </div>
+                <div class="slot-price">
+                    <span class="currency">₨</span>
+                    <span class="amount" data-target="1000">0</span>
+                    <span class="per">/session</span>
+                </div>
+                <button class="book-button btn-morning" id="book-btn-1" onclick="openBookingModal(1,'6:00 AM - 8:00 AM',1000)">
+                    <span>Book Now</span><i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Slot 2 -->
+            <div class="slot-card glass-effect fade-in-up" data-slot="2" style="--delay:0.2s">
+                <div class="slot-status available" id="status-2"><i class="fas fa-check-circle"></i><span>Available</span></div>
+                <div class="slot-icon afternoon"><i class="fas fa-sun"></i></div>
+                <h3 class="slot-title">Afternoon Session</h3>
+                <div class="slot-time"><i class="fas fa-clock"></i><span>2:00 PM - 4:00 PM</span></div>
+                <div class="slot-details">
+                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Cricket Pitch</span></div>
+                    <div class="detail-item"><i class="fas fa-umbrella-beach"></i><span>Shaded Pavilion</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-bottle-water"></i><span>Water Available</span></div>
+                </div>
+                <div class="slot-price">
+                    <span class="currency">₨</span>
+                    <span class="amount" data-target="1500">0</span>
+                    <span class="per">/session</span>
+                </div>
+                <button class="book-button btn-afternoon" id="book-btn-2" onclick="openBookingModal(2,'2:00 PM - 4:00 PM',1500)">
+                    <span>Book Now</span><i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Slot 3 - HOT DEAL -->
+            <div class="slot-card glass-effect fade-in-up" data-slot="3" style="--delay:0.3s">
+                <div class="slot-ribbon hot">🔥 HOT DEAL</div>
+                <div class="slot-status available" id="status-3"><i class="fas fa-check-circle"></i><span>Available</span></div>
+                <div class="slot-icon evening"><i class="fas fa-cloud-moon"></i></div>
+                <h3 class="slot-title">Evening Session</h3>
+                <div class="slot-time"><i class="fas fa-clock"></i><span>6:00 PM - 8:00 PM</span></div>
+                <div class="slot-details">
+                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Cricket Pitch</span></div>
+                    <div class="detail-item"><i class="fas fa-lightbulb"></i><span>Floodlights Included</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-music"></i><span>Sound System</span></div>
+                </div>
+                <div class="slot-price">
+                    <span class="old-price">₨2,000</span>
+                    <span class="currency">₨</span>
+                    <span class="amount hot-price" data-target="100">0</span>
+                    <span class="per">/session</span>
+                </div>
+                <button class="book-button btn-evening" id="book-btn-3" onclick="openBookingModal(3,'6:00 PM - 8:00 PM',100)">
+                    <span>Book Now</span><i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Slot 4 -->
+            <div class="slot-card glass-effect fade-in-up" data-slot="4" style="--delay:0.4s">
+                <div class="slot-ribbon premium">Premium</div>
+                <div class="slot-status available" id="status-4"><i class="fas fa-check-circle"></i><span>Available</span></div>
+                <div class="slot-icon night"><i class="fas fa-moon"></i></div>
+                <h3 class="slot-title">Night Session</h3>
+                <div class="slot-time"><i class="fas fa-clock"></i><span>8:00 PM - 10:00 PM</span></div>
+                <div class="slot-details">
+                    <div class="detail-item"><i class="fas fa-ruler-combined"></i><span>Full Cricket Pitch</span></div>
+                    <div class="detail-item"><i class="fas fa-lightbulb"></i><span>Premium Floodlights</span></div>
+                    <div class="detail-item"><i class="fas fa-users"></i><span>Up to 22 Players</span></div>
+                    <div class="detail-item"><i class="fas fa-trophy"></i><span>Live Commentary</span></div>
+                </div>
+                <div class="slot-price">
+                    <span class="currency">₨</span>
+                    <span class="amount" data-target="2000">0</span>
+                    <span class="per">/session</span>
+                </div>
+                <button class="book-button btn-night" id="book-btn-4" onclick="openBookingModal(4,'8:00 PM - 10:00 PM',2000)">
+                    <span>Book Now</span><i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Price Guide -->
+        <div class="price-comparison glass-effect fade-in-up">
+            <h3><i class="fas fa-tags"></i> Price Guide (PKR)</h3>
+            <div class="price-bars">
+                <div class="price-bar">
+                    <span class="bar-label">Morning (6-8 AM)</span>
+                    <div class="bar-track"><div class="bar-fill morning-bar" style="width:50%"></div></div>
+                    <span class="bar-price">₨1,000</span>
+                </div>
+                <div class="price-bar">
+                    <span class="bar-label">Afternoon (2-4 PM)</span>
+                    <div class="bar-track"><div class="bar-fill afternoon-bar" style="width:75%"></div></div>
+                    <span class="bar-price">₨1,500</span>
+                </div>
+                <div class="price-bar">
+                    <span class="bar-label">Evening (6-8 PM) 🔥</span>
+                    <div class="bar-track"><div class="bar-fill hot-bar" style="width:5%"></div></div>
+                    <span class="bar-price">₨100</span>
+                </div>
+                <div class="price-bar">
+                    <span class="bar-label">Night (8-10 PM)</span>
+                    <div class="bar-track"><div class="bar-fill night-bar" style="width:100%"></div></div>
+                    <span class="bar-price">₨2,000</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about-section">
+        <div class="about-content glass-effect fade-in-up">
+            <h2 class="section-title">Why Choose <span class="gradient-text">CricTurf</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h4>Instant Booking</h4>
+                    <p>Book your cricket slot in seconds</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-green"><i class="fas fa-mobile-alt"></i></div>
+                    <h4>Easy Payments</h4>
+                    <p>Pay via Easypaisa, JazzCash or Bank</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-pink"><i class="fas fa-star"></i></div>
+                    <h4>Professional Pitch</h4>
+                    <p>High-quality cricket turf for best experience</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-yellow"><i class="fas fa-receipt"></i></div>
+                    <h4>Digital Receipt</h4>
+                    <p>Instant confirmation with unique booking ID</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKING MODAL -->
+    <div class="modal-overlay" id="booking-modal">
+        <div class="modal glass-effect slide-in-up">
+            <button class="modal-close" id="modal-close-btn" type="button"><i class="fas fa-times"></i></button>
+
+            <div class="progress-steps">
+                <div class="step active" id="step-1-indicator"><div class="step-number">1</div><span>Details</span></div>
+                <div class="step-line" id="line-1"></div>
+                <div class="step" id="step-2-indicator"><div class="step-number">2</div><span>Payment</span></div>
+                <div class="step-line" id="line-2"></div>
+                <div class="step" id="step-3-indicator"><div class="step-number">3</div><span>Receipt</span></div>
+            </div>
+
+            <!-- STEP 1: Details -->
+            <div class="modal-step" id="step-1">
+                <h2 class="modal-title"><i class="fas fa-user-edit"></i> Your Details</h2>
+                <div class="booking-summary glass-effect-dark">
+                    <div class="summary-row">
+                        <div class="summary-item"><i class="fas fa-calendar"></i><span id="summary-date">-</span></div>
+                        <div class="summary-item"><i class="fas fa-clock"></i><span id="summary-time">-</span></div>
+                    </div>
+                    <div class="summary-price-tag">
+                        <span>Total</span>
+                        <span class="summary-price-value" id="summary-price">-</span>
+                    </div>
+                </div>
+                <form id="user-details-form" class="booking-form" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="fullName" placeholder="Ahmed Khan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Phone *</label>
+                            <input type="tel" id="phone" placeholder="03001234567" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="email" placeholder="ahmed@example.com" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teamName"><i class="fas fa-users"></i> Team Name</label>
+                            <input type="text" id="teamName" placeholder="Your Team">
+                        </div>
+                        <div class="form-group">
+                            <label for="players"><i class="fas fa-running"></i> Players *</label>
+                            <select id="players" required>
+                                <option value="">Select</option>
+                                <option value="6">6 Players</option>
+                                <option value="8">8 Players</option>
+                                <option value="10">10 Players</option>
+                                <option value="12">12 Players</option>
+                                <option value="16">16 Players</option>
+                                <option value="22">22 Players (Full Match)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="next-button" id="next-to-payment-btn">
+                        <span>Continue to Payment</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: Payment -->
+            <div class="modal-step hidden" id="step-2">
+                <h2 class="modal-title"><i class="fas fa-wallet"></i> Payment</h2>
+                <div class="payment-info glass-effect-dark">
+                    <div class="payment-header">
+                        <h3>Order Summary</h3>
+                        <div class="payment-badge">PKR</div>
+                    </div>
+                    <div class="payment-row"><span>Cricket Turf Booking</span><span id="payment-slot-time">-</span></div>
+                    <div class="payment-row"><span>Date</span><span id="payment-date">-</span></div>
+                    <div class="payment-row"><span>Customer</span><span id="payment-customer">-</span></div>
+                    <div class="payment-divider"></div>
+                    <div class="payment-row total"><span>Total Amount</span><span id="payment-total" class="total-amount">-</span></div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="payment-methods">
+                    <h3 class="methods-title"><i class="fas fa-credit-card"></i> Select Payment Method</h3>
+                    <div class="method-cards">
+                        <div class="method-card easypaisa active" id="method-easypaisa">
+                            <div class="method-radio"><div class="radio-dot"></div></div>
+                            <div class="method-logo ep-logo"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="method-info"><span class="method-name">Easypaisa</span><span class="method-desc">Mobile Wallet</span></div>
+                            <div class="method-check"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="method-card jazzcash" id="method-jazzcash">
+                            <div class="method-radio"><div class="radio-dot"></div></div>
+                            <div class="method-logo jc-logo"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="method-info"><span class="method-name">JazzCash</span><span class="method-desc">Mobile Wallet</span></div>
+                            <div class="method-check"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="method-card bank" id="method-bank">
+                            <div class="method-radio"><div class="radio-dot"></div></div>
+                            <div class="method-logo bk-logo"><i class="fas fa-university"></i></div>
+                            <div class="method-info"><span class="method-name">Bank Transfer</span><span class="method-desc">Direct Transfer</span></div>
+                            <div class="method-check"><i class="fas fa-check"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="payment-details-section glass-effect-dark">
+                    <!-- Easypaisa -->
+                    <div class="payment-method-details" id="details-easypaisa">
+                        <div class="account-header easypaisa-header">
+                            <div class="account-logo-big ep-bg"><i class="fas fa-mobile-alt"></i></div>
+                            <div><h3>Send Payment to Easypaisa</h3><p>Follow steps below</p></div>
+                        </div>
+                        <div class="account-details">
+                            <div class="account-row"><span class="account-label">Account Title</span><span class="account-value">Muhammad Rafaqat</span></div>
+                            <div class="account-row highlight-row">
+                                <span class="account-label">Easypaisa Number</span>
+                                <span class="account-value copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                            </div>
+                            <div class="account-row"><span class="account-label">Amount to Send</span><span class="account-value amount-highlight" id="ep-amount">₨0</span></div>
+                        </div>
+                        <div class="payment-steps">
+                            <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
+                            <ol>
+                                <li>Open <strong>Easypaisa App</strong></li>
+                                <li>Go to <strong>Send Money</strong></li>
+                                <li>Enter number: <strong>0340-9016279</strong></li>
+                                <li>Enter exact amount: <strong id="ep-step-amount">₨0</strong></li>
+                                <li>Confirm and note the <strong>Transaction ID</strong></li>
+                                <li>Enter Transaction ID below for verification</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- JazzCash -->
+                    <div class="payment-method-details hidden" id="details-jazzcash">
+                        <div class="account-header jazzcash-header">
+                            <div class="account-logo-big jc-bg"><i class="fas fa-mobile-alt"></i></div>
+                            <div><h3>Send Payment to JazzCash</h3><p>Follow steps below</p></div>
+                        </div>
+                        <div class="account-details">
+                            <div class="account-row"><span class="account-label">Account Title</span><span class="account-value">Muhammad Rafaqat</span></div>
+                            <div class="account-row highlight-row">
+                                <span class="account-label">JazzCash Number</span>
+                                <span class="account-value copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                            </div>
+                            <div class="account-row"><span class="account-label">Amount to Send</span><span class="account-value amount-highlight" id="jc-amount">₨0</span></div>
+                        </div>
+                        <div class="payment-steps">
+                            <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
+                            <ol>
+                                <li>Open <strong>JazzCash App</strong></li>
+                                <li>Go to <strong>Send Money</strong></li>
+                                <li>Enter number: <strong>0340-9016279</strong></li>
+                                <li>Enter exact amount: <strong id="jc-step-amount">₨0</strong></li>
+                                <li>Confirm and note the <strong>Transaction ID</strong></li>
+                                <li>Enter Transaction ID below for verification</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Bank -->
+                    <div class="payment-method-details hidden" id="details-bank">
+                        <div class="account-header bank-header">
+                            <div class="account-logo-big bk-bg"><i class="fas fa-university"></i></div>
+                            <div><h3>Bank Transfer Details</h3><p>Transfer to account below</p></div>
+                        </div>
+                        <div class="account-details">
+                            <div class="account-row"><span class="account-label">Bank Name</span><span class="account-value">Meezan Bank</span></div>
+                            <div class="account-row"><span class="account-label">Account Title</span><span class="account-value">Muhammad Rafaqat</span></div>
+                            <div class="account-row highlight-row">
+                                <span class="account-label">Account Number</span>
+                                <span class="account-value copyable" onclick="copyToClipboard('02340109876543',this)">0234-0109876543 <i class="fas fa-copy"></i></span>
+                            </div>
+                            <div class="account-row"><span class="account-label">Amount</span><span class="account-value amount-highlight" id="bk-amount">₨0</span></div>
+                        </div>
+                        <div class="payment-steps">
+                            <h4><i class="fas fa-list-ol"></i> How to Pay</h4>
+                            <ol>
+                                <li>Open your <strong>Banking App</strong></li>
+                                <li>Go to <strong>Fund Transfer</strong></li>
+                                <li>Transfer exact amount: <strong id="bk-step-amount">₨0</strong></li>
+                                <li>Note the <strong>Transaction Reference</strong></li>
+                                <li>Enter Transaction ID below for verification</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction ID -->
+                <div class="transaction-section">
+                    <div class="form-group">
+                        <label for="transactionId"><i class="fas fa-hashtag"></i> Transaction ID *</label>
+                        <input type="text" id="transactionId" placeholder="e.g. TXN123456789" required>
+                        <p class="input-hint">Enter the EXACT transaction ID from your payment receipt</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="senderNumber"><i class="fas fa-phone"></i> Sender's Number *</label>
+                        <input type="tel" id="senderNumber" placeholder="03001234567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paidAmount"><i class="fas fa-money-bill"></i> Amount You Sent *</label>
+                        <input type="number" id="paidAmount" placeholder="Enter exact amount sent" required>
+                        <p class="input-hint">Must match the booking amount exactly</p>
+                    </div>
+                </div>
+
+                <!-- Screenshot -->
+                <div class="screenshot-section glass-effect-dark">
+                    <label for="screenshot" class="screenshot-label">
+                        <i class="fas fa-camera"></i>
+                        <span>Upload Payment Screenshot (Required)</span>
+                        <p>Upload screenshot of payment confirmation</p>
+                    </label>
+                    <input type="file" id="screenshot" accept="image/*" class="screenshot-input">
+                    <div class="screenshot-preview hidden" id="screenshot-preview">
+                        <img id="screenshot-img" alt="Screenshot">
+                        <button type="button" id="remove-screenshot-btn" class="remove-screenshot"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+
+                <div class="payment-warning glass-effect-dark">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>Important:</strong> Your booking will be <strong>PENDING</strong> until admin verifies your payment. Slot will be reserved temporarily for 15 minutes.</p>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="back-button" id="back-to-step1-btn"><i class="fas fa-arrow-left"></i><span>Back</span></button>
+                    <button type="button" class="pay-button" id="pay-button"><span id="pay-button-text">Submit for Verification</span><div class="spinner hidden" id="pay-spinner"></div></button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Pending Confirmation -->
+            <div class="modal-step hidden" id="step-3">
+                <div class="confirmation-content">
+                    <div class="pending-animation">
+                        <div class="pending-circle">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                    </div>
+                    <h2 class="confirmation-title">Payment Under Verification ⏳</h2>
+                    <p class="confirmation-subtitle">Your booking is pending admin verification</p>
+
+                    <div class="pending-info glass-effect-dark">
+                        <div class="pending-row">
+                            <span>Booking ID</span>
+                            <span class="pending-value" id="pending-id">-</span>
+                        </div>
+                        <div class="pending-row">
+                            <span>Status</span>
+                            <span class="pending-status">⏳ PENDING VERIFICATION</span>
+                        </div>
+                        <div class="pending-row">
+                            <span>Slot Reserved Until</span>
+                            <span class="pending-value" id="pending-expiry">-</span>
+                        </div>
+                    </div>
+
+                    <div class="receipt glass-effect-dark" id="receipt">
+                        <div class="receipt-header">
+                            <div class="receipt-logo"><span class="cricket-icon-sm">🏏</span><span>CricTurf</span></div>
+                            <div class="receipt-badge pending-badge">PENDING</div>
+                        </div>
+                        <div class="receipt-divider"></div>
+                        <div class="receipt-body">
+                            <div class="receipt-id"><span class="label">Booking ID</span><span class="value" id="receipt-id">-</span></div>
+                            <div class="receipt-details">
+                                <div class="receipt-row"><i class="fas fa-user"></i><span class="label">Name</span><span class="value" id="receipt-name">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-phone"></i><span class="label">Phone</span><span class="value" id="receipt-phone">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-envelope"></i><span class="label">Email</span><span class="value" id="receipt-email">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-calendar"></i><span class="label">Date</span><span class="value" id="receipt-date">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-clock"></i><span class="label">Time</span><span class="value" id="receipt-time">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-running"></i><span class="label">Players</span><span class="value" id="receipt-players">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-users"></i><span class="label">Team</span><span class="value" id="receipt-team">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-wallet"></i><span class="label">Payment</span><span class="value" id="receipt-method">-</span></div>
+                                <div class="receipt-row"><i class="fas fa-hashtag"></i><span class="label">TXN ID</span><span class="value" id="receipt-txn">-</span></div>
+                            </div>
+                            <div class="receipt-divider"></div>
+                            <div class="receipt-total"><span>Amount</span><span id="receipt-amount">-</span></div>
+                        </div>
+                        <div class="receipt-footer">
+                            <div class="receipt-qr" id="qr-container"></div>
+                            <p>This receipt is PENDING verification</p>
+                            <p class="receipt-time-stamp" id="receipt-timestamp">-</p>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-actions">
+                        <button type="button" class="download-button" id="download-btn"><i class="fas fa-download"></i><span>Download</span></button>
+                        <button type="button" class="share-button" id="share-btn"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></button>
+                        <button type="button" class="done-button" id="done-btn"><i class="fas fa-check"></i><span>Done</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-icon"><i class="fas fa-info-circle"></i></div>
+        <div class="toast-message" id="toast-message">Notification</div>
+        <button type="button" class="toast-close" id="toast-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer glass-effect" id="contact">
+        <div class="footer-content">
+            <div class="footer-brand"><span class="cricket-icon-sm">🏏</span><span>CricTurf</span></div>
+            <p>Premium Cricket Turf Booking • Pakistan 🇵🇰</p>
+            <div class="footer-payment-methods">
+                <span>We Accept:</span>
+                <div class="footer-method">Easypaisa</div>
+                <div class="footer-method">JazzCash</div>
+                <div class="footer-method">Bank Transfer</div>
+            </div>
+            <div class="footer-info">
+                <div class="footer-info-item"><i class="fas fa-map-marker-alt"></i><span>Lahore, Pakistan</span></div>
+                <div class="footer-info-item"><i class="fas fa-phone"></i><span>0340-9016279</span></div>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+            <p class="copyright">© 2024 CricTurf. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/animations.js"></script>
+    <script src="js/receipt.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/booking.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
