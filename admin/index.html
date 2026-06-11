@@ -147,9 +147,14 @@ body { padding: 80px 20px 40px; }
         <div>
             <h1>🏏 Admin <span class="gradient-text">Dashboard</span></h1>
             <p>Manage bookings, view analytics & revenue</p>
-        </div>
-        <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
+        <div style="display:flex;gap:10px;">
+    <button class="logout-btn" id="clear-all-btn" style="background:rgba(225,112,85,0.15);color:#e17055;border:1px solid rgba(225,112,85,0.3);">
+        <i class="fas fa-trash-alt"></i> Clear All Data
+    </button>
+    <button class="logout-btn" id="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+</div>
 
     <!-- STATS -->
     <div class="stats-bar">
@@ -249,6 +254,31 @@ function doLogin() {
         document.getElementById('login-error-msg').textContent = 'Invalid username or password';
     }
 }
+document.getElementById('clear-all-btn').addEventListener('click', async () => {
+    const confirm1 = confirm('⚠️ DELETE ALL BOOKINGS?\n\nThis will:\n• Remove all booking history\n• Reset all slots to Available\n• Cannot be undone!\n\nContinue?');
+    if (!confirm1) return;
+    
+    const pwd = prompt('Type admin password to confirm:');
+    if (!pwd) return;
+    
+    try {
+        const res = await fetch('/api/clear-all-bookings', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ password: pwd })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            alert('✅ All bookings deleted! Slots are now available.');
+            loadBookings();
+        } else {
+            alert('❌ Error: ' + (data.error || 'Failed'));
+        }
+    } catch(e) {
+        alert('❌ Error: ' + e.message);
+    }
+});
 
 document.getElementById('logout-btn').addEventListener('click', () => {
     sessionStorage.removeItem('adminSession');
