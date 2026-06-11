@@ -65,20 +65,32 @@ body{padding:80px 20px 40px;min-height:100vh}
 </div>
 
 <script>
+let currentBookingId = null;
+let currentStatus = null;
+let checkInterval = null;
+
 async function init(){
     const params = new URLSearchParams(window.location.search);
     const bookingId = params.get('id');
     const container = document.getElementById('container');
-    const loader = document.getElementById('loader');
 
     if(!bookingId){
         showErr('No booking ID provided. Please check your link.');
         return;
     }
+    
+    currentBookingId = bookingId;
+    await loadReceipt(bookingId);
+    
+    // Auto-check every 10 seconds if status is pending
+    if (currentStatus === 'pending') {
+        startStatusCheck();
+    }
+}
 
+async function loadReceipt(bookingId) {
     try{
         const res = await fetch(`/api/get-receipt?id=${encodeURIComponent(bookingId)}`);
-        
         if(!res.ok) throw new Error(`Server error ${res.status}`);
         
         const data = await res.json();
@@ -88,11 +100,106 @@ async function init(){
             return;
         }
 
+        const newStatus = data.booking.status;
+        
+        // If status changed from pending → confirmed, show celebration!
+        if (currentStatus === 'pending' && newStatus === 'confirmed') {
+            celebrateConfirmation();
+            stopStatusCheck();
+        } else if (currentStatus === 'pending' && newStatus === 'rejected') {
+            stopStatusCheck();
+        }
+        
+        currentStatus = newStatus;
         renderReceipt(data.booking);
 
     }catch(e){
         showErr(`Failed to load: ${e.message}`);
     }
+}
+
+function startStatusCheck() {
+    // Check every 10 seconds for status updates
+    checkInterval = setInterval(async () => {
+        await loadReceipt(currentBookingId);
+    }, 10000);
+    
+    console.log('[Receipt] Auto-checking enabled - will refresh every 10s');
+}
+
+function stopStatusCheck() {
+    if (checkInterval) {
+        clearInterval(checkInterval);
+        checkInterval = null;
+    }
+}
+
+function celebrateConfirmation() {
+    // Show celebration overlay
+    const celebration = document.createElement('div');
+    celebration.id = 'celebration-overlay';
+    celebration.innerHTML = `
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <h2>Payment Confirmed!</h2>
+            <p>Your booking is now active. QR code generated!</p>
+        </div>
+    `;
+    celebration.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,184,148,0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        animation: fadeIn 0.5s ease;
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounceIn { 
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .celebration-content {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            animation: bounceIn 0.6s ease;
+        }
+        .celebration-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounceIn 0.8s ease;
+        }
+        .celebration-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        .celebration-content p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(celebration);
+    
+    // Play success sound (optional)
+    try {
+        const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+        audio.play().catch(()=>{});
+    } catch(e){}
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        celebration.style.animation = 'fadeIn 0.5s ease reverse';
+        setTimeout(() => celebration.remove(), 500);
+    }, 3000);
 }
 
 function showErr(msg){
@@ -101,7 +208,7 @@ function showErr(msg){
             <i class="fas fa-exclamation-triangle" style="font-size:3rem"></i>
             <p>${msg}</p>
             <br>
-            <a href="../index.html" class="btn-action btn-print" style="width:auto;margin:0 auto;display:inline-flex">
+            <a href="../index.html" class="btn-action btn-print" style="width:auto;margin:0 auto;display:inline-flex;text-decoration:none;">
                 <i class="fas fa-home"></i> Go Home
             </a>
         </div>`;
@@ -111,7 +218,11 @@ function renderReceipt(b){
     const s = b.status || 'pending';
     const icons = {confirmed:'fa-check-circle',pending:'fa-hourglass-half',rejected:'fa-times-circle'};
     const titles = {confirmed:'Booking Confirmed! ✅',pending:'Pending Verification ⏳',rejected:'Booking Rejected ❌'};
-    const descs = {confirmed:'Your turf is reserved. Show this at venue.',pending:'Admin is reviewing your payment.',rejected:'Payment was not verified.'};
+    const descs = {
+        confirmed:'Your turf is reserved. Show this QR at venue.',
+        pending:'Admin is reviewing your payment. This page auto-refreshes every 10 seconds.',
+        rejected:'Payment was not verified. Please contact support.'
+    };
     
     const d = new Date(b.date+'T00:00:00');
     const dateStr = d.toLocaleDateString('en-PK',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -121,6 +232,7 @@ function renderReceipt(b){
             <i class="fas ${icons[s]} status-icon"></i>
             <h1>${titles[s]}</h1>
             <p>${descs[s]}</p>
+            ${s === 'pending' ? '<p style="font-size:0.8rem;margin-top:10px;opacity:0.8;"><i class="fas fa-sync fa-spin"></i> Auto-refreshing...</p>' : ''}
         </div>
         
         <div class="receipt-box glass-effect">
@@ -144,7 +256,7 @@ function renderReceipt(b){
             ${s === 'confirmed' ? `
             <div class="qr-area">
                 <div id="qr-code-gen"></div>
-                <p>Show this screen or QR code at the venue entrance</p>
+                <p>Show this QR code at the venue entrance</p>
             </div>` : ''}
             
             <div class="actions">
@@ -183,6 +295,9 @@ function shareWa(id){
     const msg = `🏏 *CricTurf Booking*\n\nID: ${id}\nCheck: ${window.location.href}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
+
+// Clean up when leaving page
+window.addEventListener('beforeunload', stopStatusCheck);
 
 init();
 </script>
