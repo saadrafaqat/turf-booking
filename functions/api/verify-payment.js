@@ -1,59 +1,30 @@
 export async function onRequestPost(context) {
-    const { request, env } = context;
-    const headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-    };
-
+    // This is the same as confirm-booking.js (duplicate endpoint for compatibility)
+    // Some setups call this instead of confirm-booking
+    
     try {
-        const body = await request.json();
-        const { transactionId, senderNumber, amount, paymentMethod, slotId, date, userDetails } = body;
-
-        if (!transactionId || !senderNumber || !slotId || !date) {
-            return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400, headers });
-        }
-
-        // Validate prices
-        const validPrices = { 1: 1000, 2: 1500, 3: 2000, 4: 2000 };
-        if (validPrices[slotId] !== amount) {
-            return new Response(JSON.stringify({ error: 'Invalid price' }), { status: 400, headers });
-        }
-
-        // Check if already booked (KV)
-        if (env.BOOKINGS) {
-            const key = `booking:${date}:${slotId}`;
-            const existing = await env.BOOKINGS.get(key);
-            if (existing) {
-                return new Response(JSON.stringify({ error: 'Slot already booked' }), { status: 409, headers });
-            }
-
-            // Save booking
-            const bookingData = {
-                slotId, date, transactionId, senderNumber,
-                paymentMethod, amount, userDetails,
-                bookedAt: new Date().toISOString(),
-                bookingId: 'TB-' + Math.random().toString(36).substr(2, 8).toUpperCase()
-            };
-            await env.BOOKINGS.put(key, JSON.stringify(bookingData), { expirationTtl: 86400 * 30 });
-
-            // Also save TXN for reference
-            await env.BOOKINGS.put(`txn:${transactionId}`, JSON.stringify(bookingData), { expirationTtl: 86400 * 30 });
-        }
-
-        // TODO: Add actual Easypaisa/JazzCash API verification here
-        // For Easypaisa: Use their merchant API to verify TXN
-        // For JazzCash: Use their payment verification API
-
-        return new Response(JSON.stringify({ success: true, message: 'Payment verified and booking confirmed' }), { status: 200, headers });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500, headers });
+        const { bookingId, action } = await context.request.json();
+        const kv = context.env.BOOKINGS_KV;
+        
+        if (!bookingId || !['confirmed','rejected'].includes(action))
+            return jsonResponse({ error:'Invalid' }, 400);
+        if (!kv) return jsonResponse({ error:'KV not bound' }, 500);
+        
+        let all = JSON.parse(await kv.get('all_bookings') || '[]');
+        const idx = all.findIndex(b => b.bookingId === bookingId);
+        
+        if (idx === -1) return jsonResponse({ error:'Not found' }, 404);
+        
+        all[idx].status = action;
+        all[idx].verifiedAt = new Date().toISOString();
+        
+        await kv.put('all_bookings', JSON.stringify(all));
+        
+        return jsonResponse({ success:true, action });
+    } catch (err) {
+        return jsonResponse({ error:err.message }, 500);
     }
 }
-
-export async function onRequestOptions() {
-    return new Response(null, {
-        headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' }
-    });
+function JsonResponse(data, status=200) {
+    return new Response(JSON.stringify(data), { status, headers:{'Content-Type':'application/json'} });
 }
