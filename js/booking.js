@@ -286,3 +286,49 @@ function shareWA() {
     const url=location.origin+'/receipt/?id='+id;
     open(`https://wa.me/?text=${encodeURIComponent('🏏 My CricTurf Booking ID: '+id+'\nCheck: '+url)}`,'_blank');
 }
+
+
+// =========================
+// SMART AUTO-REFRESH WITH PAUSE FEATURE
+// Saves API calls when user is not looking at the page
+// =========================
+let refreshTimer = null;
+
+function startAutoRefresh() {
+    // Don't start if already running
+    if (refreshTimer) return;
+    
+    refreshTimer = setInterval(() => {
+        const modal = document.getElementById('booking-modal');
+        // Only refresh if modal is closed
+        if (modal && !modal.classList.contains('active')) {
+            loadSlotStatesFromAPI();
+        }
+    }, 15000); // Check every 15 seconds
+    
+    console.log('▶️ Auto-refresh STARTED');
+}
+
+function pauseAutoRefresh() {
+    if (refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+        console.log('⏸️ Auto-refresh PAUSED (tab not visible)');
+    }
+}
+
+// Start refresh when page loads
+startAutoRefresh();
+
+// Smart pause: stop when user switches tabs, resume when they return
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // User left the tab → PAUSE to save API calls
+        pauseAutoRefresh();
+    } else {
+        // User came back → RESUME + instant fresh check
+        console.log('👀 User returned - refreshing now');
+        loadSlotStatesFromAPI();
+        startAutoRefresh();
+    }
+});
