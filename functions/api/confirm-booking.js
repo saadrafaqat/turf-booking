@@ -1,23 +1,27 @@
 export async function onRequestPost(context) {
-    const { request, env } = context;
-    const headers = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
-
     try {
-        const body = await request.json();
-        const { bookingId, slotId, date, transactionId, userDetails } = body;
-
-        if (env.BOOKINGS) {
-            const key = `booking:${date}:${slotId}`;
-            const data = { bookingId, slotId, date, transactionId, userDetails, confirmedAt: new Date().toISOString() };
-            await env.BOOKINGS.put(key, JSON.stringify(data), { expirationTtl: 86400 * 30 });
-        }
-
-        return new Response(JSON.stringify({ success: true }), { status: 200, headers });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500, headers });
+        const { bookingId, action } = await context.request.json();
+        const kv = context.env.BOOKINGS_KV;
+        
+        if (!bookingId || !['confirmed','rejected'].includes(action))
+            return jsonResponse({ error:'Invalid params' }, 400);
+        if (!kv) return jsonResponse({ error:'KV not bound' }, 500);
+        
+        let all = JSON.parse(await kv.get('all_bookings') || '[]');
+        const idx = all.findIndex(b => b.bookingId === bookingId);
+        
+        if (idx === -1) return jsonResponse({ error:'Not found' }, 404);
+        
+        all[idx].status = action;
+        all[idx].verifiedAt = new Date().toISOString();
+        
+        await kv.put('all_bookings', JSON.stringify(all));
+        
+        return jsonResponse({ success:true, action, message:`Booking ${action}` });
+    } catch (err) {
+        return jsonResponse({ error:err.message }, 500);
     }
 }
-
-export async function onRequestOptions() {
-    return new Response(null, { headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+function jsonResponse(data, status=200) {
+    return new Response(JSON.stringify(data), { status, headers:{'Content-Type':'application/json'} });
 }
