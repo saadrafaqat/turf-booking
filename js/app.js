@@ -1,45 +1,76 @@
-document.addEventListener('DOMContentLoaded', function() {
-    initAnimations();
-    initBooking();
-    initModalEvents();
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🏏 CricTurf App Initialized');
+    console.log('💰 Currency: PKR | Payment: Easypaisa, JazzCash, Bank');
+    console.log('📋 Slots: ₨1,000 / ₨1,500 / ₨2,000 / ₨2,000');
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const t = document.querySelector(this.getAttribute('href'));
+            if (t) t.scrollIntoView({behavior:'smooth',block:'start'});
+        });
+    });
+
+    document.getElementById('booking-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeBookingModal();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeBookingModal();
+    });
+
+    addTypingCursor();
     animateCounters();
-    createParticles();
+    addInteractiveEffects();
 });
 
+function addTypingCursor() {
+    const h = document.querySelector('.hero-highlight');
+    if (!h) return;
+    const c = document.createElement('span');
+    c.style.cssText = 'display:inline-block;width:3px;height:1em;background:var(--primary);margin-left:5px;animation:blink 1s step-end infinite;vertical-align:text-bottom;';
+    if (!document.getElementById('blink-style')) {
+        const s = document.createElement('style');
+        s.id = 'blink-style';
+        s.textContent = '@keyframes blink{50%{opacity:0}}';
+        document.head.appendChild(s);
+    }
+    h.appendChild(c);
+    setTimeout(() => { c.style.animation='none'; c.style.opacity='0'; c.style.transition='opacity 0.5s'; }, 3000);
+}
+
 function animateCounters() {
-    const amounts = document.querySelectorAll('.amount');
-    amounts.forEach(el => {
-        const target = parseInt(el.getAttribute('data-target')) || 0;
-        let current = 0;
-        const increment = Math.ceil(target / 60);
-        const timer = setInterval(() => {
-            current = Math.min(current + increment, target);
-            el.textContent = current.toLocaleString();
-            if (current >= target) clearInterval(timer);
-        }, 25);
+    document.querySelectorAll('.slot-price .amount').forEach(el => {
+        const target = parseInt(el.getAttribute('data-target'));
+        if (!target) return;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    let start = null;
+                    function step(ts) {
+                        if (!start) start = ts;
+                        const p = Math.min((ts-start)/1500, 1);
+                        const eased = 1-Math.pow(1-p,3);
+                        el.textContent = Math.floor(eased*target).toLocaleString();
+                        if (p<1) requestAnimationFrame(step);
+                        else el.textContent = target.toLocaleString();
+                    }
+                    requestAnimationFrame(step);
+                    observer.unobserve(e.target);
+                }
+            });
+        }, {threshold:0.5});
+        observer.observe(el);
     });
 }
 
-function createParticles() {
-    const container = document.getElementById('particles');
-    if (!container) return;
-    
-    for (let i = 0; i < 20; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.cssText = `
-            position: fixed;
-            width: ${Math.random() * 4 + 2}px;
-            height: ${Math.random() * 4 + 2}px;
-            background: rgba(108, 92, 231, ${Math.random() * 0.3 + 0.1});
-            border-radius: 50%;
-            left: ${Math.random() * 100}vw;
-            top: ${Math.random() * 100}vh;
-            animation: floatParticle ${Math.random() * 10 + 8}s ease-in-out infinite;
-            animation-delay: ${Math.random() * 5}s;
-            pointer-events: none;
-            z-index: 0;
-        `;
-        container.appendChild(p);
+function addInteractiveEffects() {
+    const cta = document.querySelector('.cta-button');
+    if (cta) {
+        cta.addEventListener('mousemove', e => {
+            const r = cta.getBoundingClientRect();
+            cta.style.transform = `translate(${(e.clientX-r.left-r.width/2)*0.1}px,${(e.clientY-r.top-r.height/2)*0.1}px)`;
+        });
+        cta.addEventListener('mouseleave', () => cta.style.transform = 'translate(0,0)');
     }
 }
