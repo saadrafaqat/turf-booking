@@ -3,154 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CricTurf Booking Receipt</title>
+<title>CricTurf - Booking Receipt</title>
 <link rel="stylesheet" href="../css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
-body { padding: 80px 20px 40px; min-height: 100vh; }
-.receipt-container { max-width: 500px; margin: 0 auto; }
-.status-banner { padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
-.status-banner.confirmed { background: linear-gradient(135deg, #00b894, #00d4a8); }
-.status-banner.pending { background: linear-gradient(135deg, #fdcb6e, #f39c12); }
-.status-banner.rejected { background: linear-gradient(135deg, #e17055, #d63031); }
-.status-banner h1 { color: white; margin: 0 0 5px 0; font-size: 1.5rem; }
-.status-banner p { color: white; opacity: 0.9; margin: 0; }
-.status-icon { font-size: 3rem; color: white; margin-bottom: 10px; display: block; }
-.receipt-box { padding: 25px; border-radius: 16px; }
-.receipt-header { text-align: center; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.2); margin-bottom: 15px; }
-.receipt-header h2 { color: white; margin: 0; font-size: 1.4rem; }
-.receipt-header .booking-id { font-family: monospace; color: #a29bfe; font-size: 1rem; margin-top: 5px; }
-.detail-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; font-size: 0.9rem; }
-.detail-line .label { color: rgba(255,255,255,0.6); }
-.detail-line .value { font-weight: 600; text-align: right; }
-.detail-line.total { font-size: 1.1rem; font-weight: 700; border-top: 1px dashed rgba(255,255,255,0.2); border-bottom: none; padding-top: 15px; margin-top: 10px; }
-.detail-line.total .value { color: #00b894; }
-.loading { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6); }
-.loading i { font-size: 3rem; margin-bottom: 15px; display: block; }
-.qr-section { text-align: center; padding: 20px 0; }
-.qr-section img, .qr-section canvas { background: white; padding: 10px; border-radius: 10px; }
-.qr-section p { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 10px; }
-.action-btns { display: flex; gap: 10px; margin-top: 20px; }
-.action-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: 'Inter'; font-weight: 600; cursor: pointer; }
-.print-btn { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
-.share-btn-r { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
-@media print {
-    body { background: white !important; padding: 20px !important; }
-    .action-btns, .navbar { display: none !important; }
-    .bg-animation { display: none !important; }
-    .receipt-box, .status-banner { background: white !important; box-shadow: 0 0 0 1px #ddd; }
-    .receipt-box *, .status-banner * { color: black !important; }
+body{padding:80px 20px 40px;min-height:100vh}
+.receipt-container{max-width:520px;margin:0 auto}
+.status-banner{padding:28px;border-radius:18px;text-align:center;margin-bottom:24px}
+.status-banner.confirmed{background:linear-gradient(135deg,#00b894,#00d4a8)}
+.status-banner.pending{background:linear-gradient(135deg,#fdcb6e,#f39c12)}
+.status-banner.rejected{background:linear-gradient(135deg,#e17055,#d63031)}
+.status-banner h1{color:white;margin:0 0 8px 0;font-size:1.6rem}
+.status-banner p{color:white;opacity:0.95;margin:0;font-size:0.95rem}
+.status-icon{font-size:3.5rem;color:white;margin-bottom:12px;display:block}
+.receipt-box{padding:28px;border-radius:18px}
+.receipt-head{text-align:center;padding-bottom:18px;border-bottom:1px dashed rgba(255,255,255,0.15);margin-bottom:18px}
+.receipt-head h2{color:white;margin:0;font-size:1.5rem;display:flex;align-items:center;justify-content:center;gap:8px}
+.receipt-id-display{font-family:monospace;color:#a29bfe;font-size:1rem;margin-top:6px;font-weight:700}
+.info-line{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.92rem;color:white}
+.info-line .lbl{color:rgba(255,255,255,0.6)}
+.info-line .val{text-align:right;font-weight:600}
+.info-line.total-row{border:none;border-top:1px dashed rgba(255,255,255,0.15);margin-top:12pt;padding-top:14px;font-size:1.1rem;font-weight:800}
+.info-line.total-row .val{color:#00b894}
+.qr-area{text-align:center;padding:22px 0}
+.qr-area canvas,.qr-area img{background:white;padding:12px;border-radius:12px!important;max-width:160px!important}
+.qr-area p{color:rgba(255,255,255,0.6);font-size:0.82rem;margin-top:12px}
+.actions{display:flex;gap:12px;margin-top:22px}
+.btn-action{flex:1;padding:13px;border:none;border-radius:11px;font-family:'Inter';font-weight:700;cursor:pointer;font-size:0.92rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.2s}
+.btn-print{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white}
+.btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E);color:white}
+.btn-action:hover{transform:translateY(-2px)}
+.loading-state{text-align:center;padding:70px 20px;color:rgba(255,255,255,0.6)}
+.loading-state i{font-size:3.5rem;display:block;margin-bottom:16px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-state{text-align:center;padding:50px 20px;color:#e17055}
+@media print{
+    body{background:#fff!important;padding:20px!important}
+    .navbar,.actions,.bg-animation{display:none!important}
+    .receipt-box,.status-banner{background:#fff!important;color:#000!important;border:1px solid #ddd!important}
+    .receipt-box *,.status-banner *{color:#000!important;-webkit-text-fill-color:#000!important;border-color:#ccc!important}
+    .qr-area canvas{filter:invert(0)!important}
 }
 </style>
 </head>
 <body>
 
-<div class="bg-animation">
-    <div class="bg-circle circle-1"></div>
-    <div class="bg-circle circle-2"></div>
-</div>
+<div class="bg-animation"><div class="bg-circle circle-1"></div><div class="bg-circle circle-2"></div></div>
 
 <nav class="navbar glass-effect">
     <div class="nav-brand"><span>🏏</span><span>CricTurf</span></div>
-    <div class="nav-links"><a href="../index.html" class="nav-link">← Home</a></div>
+    <div class="nav-links"><a href="../index.html" class="nav-link">← Back Home</a></div>
 </nav>
 
-<div class="receipt-container" id="receipt-container">
-    <div class="loading">
-        <i class="fas fa-spinner fa-spin"></i>
+<div class="receipt-container" id="container">
+    <div class="loading-state" id="loader">
+        <i class="fas fa-spinner"></i>
         <p>Loading receipt...</p>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-async function loadReceipt() {
+async function init(){
     const params = new URLSearchParams(window.location.search);
     const bookingId = params.get('id');
-    const container = document.getElementById('receipt-container');
+    const container = document.getElementById('container');
+    const loader = document.getElementById('loader');
 
-    if (!bookingId) {
-        container.innerHTML = '<div class="loading"><i class="fas fa-exclamation-triangle"></i><p>No booking ID provided</p></div>';
+    if(!bookingId){
+        showErr('No booking ID provided. Please check your link.');
         return;
     }
 
-    try {
+    try{
         const res = await fetch(`/api/get-receipt?id=${encodeURIComponent(bookingId)}`);
+        
+        if(!res.ok) throw new Error(`Server error ${res.status}`);
+        
         const data = await res.json();
-
-        if (!data.success) {
-            container.innerHTML = `<div class="loading"><i class="fas fa-exclamation-triangle"></i><p>${data.error || 'Booking not found'}</p></div>`;
+        
+        if(!data.success || !data.booking){
+            showErr(data.error || 'Booking not found in our records.');
             return;
         }
 
-        const b = data.booking;
-        const status = b.status || 'pending';
-        const statusIcon = status === 'confirmed' ? 'fa-check-circle' : status === 'rejected' ? 'fa-times-circle' : 'fa-hourglass-half';
-        const statusText = status === 'confirmed' ? 'Booking Confirmed!' : status === 'rejected' ? 'Booking Rejected' : 'Pending Verification';
-        const statusDesc = status === 'confirmed' ? 'Your turf is reserved' : status === 'rejected' ? 'Payment was not verified' : 'Admin is reviewing your payment';
+        renderReceipt(data.booking);
 
-        const dateObj = new Date(b.date + 'T00:00:00');
-        const formattedDate = dateObj.toLocaleDateString('en-PK', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-        container.innerHTML = `
-        <div class="status-banner ${status}">
-            <i class="fas ${statusIcon} status-icon"></i>
-            <h1>${statusText}</h1>
-            <p>${statusDesc}</p>
-        </div>
-
-        <div class="receipt-box glass-effect">
-            <div class="receipt-header">
-                <h2>🏏 CricTurf Receipt</h2>
-                <div class="booking-id">${b.bookingId}</div>
-            </div>
-
-            <div class="detail-line"><span class="label">Name</span><span class="value">${b.userDetails?.fullName || '-'}</span></div>
-            <div class="detail-line"><span class="label">Phone</span><span class="value">${b.userDetails?.phone || '-'}</span></div>
-            <div class="detail-line"><span class="label">Email</span><span class="value">${b.userDetails?.email || '-'}</span></div>
-            <div class="detail-line"><span class="label">Team</span><span class="value">${b.userDetails?.teamName || 'N/A'}</span></div>
-            <div class="detail-line"><span class="label">Turf</span><span class="value">Turf ${b.turfNumber}</span></div>
-            <div class="detail-line"><span class="label">Date</span><span class="value">${formattedDate}</span></div>
-            <div class="detail-line"><span class="label">Time</span><span class="value">${b.time}</span></div>
-            <div class="detail-line"><span class="label">Players</span><span class="value">${b.userDetails?.players || '-'}</span></div>
-            <div class="detail-line"><span class="label">Payment</span><span class="value">${b.paymentMethod || '-'}</span></div>
-            <div class="detail-line"><span class="label">TXN ID</span><span class="value" style="font-family:monospace;font-size:0.8rem;">${b.transactionId || '-'}</span></div>
-            <div class="detail-line total"><span class="label">Total Paid</span><span class="value">₨${parseInt(b.expectedAmount || 0).toLocaleString()}</span></div>
-
-            ${status === 'confirmed' ? `
-            <div class="qr-section">
-                <div id="qrcode"></div>
-                <p>Show this receipt at the venue</p>
-            </div>` : ''}
-
-            <div class="action-btns">
-                <button class="action-btn print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-                <button class="action-btn share-btn-r" onclick="shareWhatsApp('${b.bookingId}')"><i class="fab fa-whatsapp"></i> Share</button>
-            </div>
-        </div>`;
-
-        if (status === 'confirmed' && typeof QRCode !== 'undefined') {
-            new QRCode(document.getElementById('qrcode'), {
-                text: window.location.href,
-                width: 150,
-                height: 150
-            });
-        }
-
-    } catch (err) {
-        container.innerHTML = `<div class="loading"><i class="fas fa-exclamation-triangle"></i><p>Error loading: ${err.message}</p></div>`;
+    }catch(e){
+        showErr(`Failed to load: ${e.message}`);
     }
 }
 
-function shareWhatsApp(id) {
-    const url = window.location.href;
-    const msg = `🏏 *CricTurf Booking*\n\nBooking ID: ${id}\nView receipt: ${url}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+function showErr(msg){
+    document.getElementById('container').innerHTML = `
+        <div class="error-state">
+            <i class="fas fa-exclamation-triangle" style="font-size:3rem"></i>
+            <p>${msg}</p>
+            <br>
+            <a href="../index.html" class="btn-action btn-print" style="width:auto;margin:0 auto;display:inline-flex">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+        </div>`;
 }
 
-loadReceipt();
-</script>
+function renderReceipt(b){
+    const s = b.status || 'pending';
+    const icons = {confirmed:'fa-check-circle',pending:'fa-hourglass-half',rejected:'fa-times-circle'};
+    const titles = {confirmed:'Booking Confirmed! ✅',pending:'Pending Verification ⏳',rejected:'Booking Rejected ❌'};
+    const descs = {confirmed:'Your turf is reserved. Show this at venue.',pending:'Admin is reviewing your payment.',rejected:'Payment was not verified.'};
+    
+    const d = new Date(b.date+'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-PK',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    
+    document.getElementById('container').innerHTML = `
+        <div class="status-banner ${s}">
+            <i class="fas ${icons[s]} status-icon"></i>
+            <h1>${titles[s]}</h1>
+            <p>${descs[s]}</p>
+        </div>
+        
+        <div class="receipt-box glass-effect">
+            <div class="receipt-head">
+                <h2>🏏 CricTurf <span style="font-size:0.8rem;opacity:0.7">Official Receipt</span></h2>
+                <div class="receipt-id-display">#${b.bookingId}</div>
+            </div>
+            
+            <div class="info-line"><span class="lbl">Customer Name</span><span class="val">${b.userDetails?.fullName||'-'}</span></div>
+            <div class="info-line"><span class="lbl">Phone</span><span class="val">${b.userDetails?.phone||'-'}</span></div>
+            <div class="info-line"><span class="lbl">Email</span><span class="val">${b.userDetails?.email||'-'}</span></div>
+            <div class="info-line"><span class="lbl">Team</span><span class="val">${b.userDetails?.teamName||'N/A'}</span></div>
+            <div class="info-line"><span class="lbl">Turf</span><span class="val">Turf ${b.turfNumber}</span></div>
+            <div class="info-line"><span class="lbl">Date</span><span class="val">${dateStr}</span></div>
+            <div class="info-line"><span class="lbl">Time Slot</span><span class="val">${b.time||'-'}</span></div>
+            <div class="info-line"><span class="lbl">Players</span><span class="val">${b.userDetails?.players||'-'} Players</span></div>
+            <div class="info-line"><span class="lbl">Payment Via</span><span class="val">${b.paymentMethod||'-'}</span></div>
+            <div class="info-line"><span class="lbl">Transaction ID</span><span class="val" style="font-family:monospace;font-size:0.82rem">${b.transactionId||'-'}</span></div>
+            <div class="info-line total-row"><span class="lbl">Total Paid</span><span class="val">PKR ${parseInt(b.expectedAmount||0).toLocaleString()}</span></div>
+            
+            ${s === 'confirmed' ? `
+            <div class="qr-area">
+                <div id="qr-code-gen"></div>
+                <p>Show this screen or QR code at the venue entrance</p>
+            </div>` : ''}
+            
+            <div class="actions">
+                <button class="btn-action btn-print" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print / Save PDF
+                </button>
+                <button class="btn-action btn-whatsapp" onclick="shareWa('${b.bookingId}')">
+                    <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Generate QR only if confirmed
+    if(s === 'confirmed'){
+        setTimeout(()=>{
+            try{
+                if(typeof QRCode !== 'undefined'){
+                    new QRCode(document.getElementById('qr-code-gen'), {
+                        text: window.location.href,
+                        width:150,
+                        height:150,
+                        colorDark:'#1a1a2e',
+                        colorLight:'#ffffff',
+                        correctLevel:QRCode.CorrectLevel.M
+                    });
+                }
+            }catch(e){
+                console.log('QR generation failed:', e);
+            }
+        }, 200);
+    }
+}
 
+function shareWa(id){
+    const msg = `🏏 *CricTurf Booking*\n\nID: ${id}\nCheck: ${window.location.href}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+init();
+</script>
 </body>
 </html>
