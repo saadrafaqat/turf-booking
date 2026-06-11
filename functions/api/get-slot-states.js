@@ -1,38 +1,31 @@
 export async function onRequestGet(context) {
     try {
         const url = new URL(context.request.url);
-        const date = url.searchParams.get('date');
-
-        if (!date) return jsonResponse({ slots: {} }, 200);
-
+        const paramDate = url.searchParams.get('date');
         const kv = context.env.BOOKINGS_KV;
-        if (!kv) return jsonResponse({ slots: {} }, 200);
-
-        const raw = await kv.get('all_bookings');
-        const bookings = raw ? JSON.parse(raw) : [];
-
-        const dateBookings = bookings.filter(b => b.date === date);
-        const slots = {};
-
-        dateBookings.forEach(b => {
+        
+        const states = {};
+        let bookings = [];
+        
+        if (kv) {
+            bookings = JSON.parse(await kv.get('all_bookings') || '[]');
+        }
+        
+        if (paramDate && paramDate !== 'all') {
+            bookings = bookings.filter(b => b.date === paramDate);
+        }
+        
+        bookings.forEach(b => {
             const key = `${b.turfNumber}-${b.slotNumber}`;
-            if (b.status === 'confirmed') {
-                slots[key] = 'confirmed';
-            } else if (b.status === 'pending' && slots[key] !== 'confirmed') {
-                slots[key] = 'pending';
-            }
+            if (b.status === 'confirmed') states[key] = 'confirmed';
+            else if (b.status === 'pending' && !states[key]) states[key] = 'pending';
         });
-
-        return jsonResponse({ date, slots });
-
+        
+        return jsonResponse({ states, count: bookings.length, bookings: paramDate==='all'?bookings:void 0 });
     } catch (err) {
-        return jsonResponse({ slots: {}, error: err.message }, 200);
+        return jsonResponse({ states:{}, error:err.message }, 200);
     }
 }
-
-function jsonResponse(data, status = 200) {
-    return new Response(JSON.stringify(data), {
-        status,
-        headers: { 'Content-Type': 'application/json' }
-    });
+function jsonResponse(data, status=200) {
+    return new Response(JSON.stringify(data), { status, headers:{'Content-Type':'application/json'} });
 }
