@@ -1,47 +1,30 @@
 export async function onRequestPost(context) {
     try {
-        const booking = await context.request.json();
-
-        if (!booking.bookingId || !booking.transactionId || !booking.userDetails) {
-            return jsonResponse({ success: false, error: 'Missing required fields' }, 400);
-        }
-
+        const body = await context.request.json();
         const kv = context.env.BOOKINGS_KV;
-        if (!kv) {
-            return jsonResponse({ success: false, error: 'KV not configured. Bind BOOKINGS_KV in Cloudflare dashboard.' }, 500);
+        
+        if (!kv) return jsonResponse({ error: 'BOOKINGS_KV binding missing' }, 500);
+        if (!body.bookingId || !body.transactionId) return jsonResponse({ error: 'Missing fields' }, 400);
+        
+        let all = JSON.parse(await kv.get('all_bookings') || '[]');
+        
+        // Check duplicate txn
+        if (all.find(b => b.transactionId === body.transactionId)) {
+            return jsonResponse({ error: 'Transaction ID already used' }, 400);
         }
-
-        const existingRaw = await kv.get('all_bookings');
-        let bookings = existingRaw ? JSON.parse(existingRaw) : [];
-
-        // Check duplicate transaction
-        if (bookings.find(b => b.transactionId === booking.transactionId)) {
-            return jsonResponse({ success: false, error: 'This Transaction ID is already used' }, 400);
+        // Check slot availability
+        if (all.find(b => b.date===body.date && b.turfNumber===body.turfNumber && b.slotNumber===body.slotNumber && b.status==='confirmed')) {
+            return jsonResponse({ error: 'Slot already booked' }, 400);
         }
-
-        // Check slot already confirmed
-        if (bookings.find(b =>
-            b.date === booking.date &&
-            b.turfNumber === booking.turfNumber &&
-            b.slotNumber === booking.slotNumber &&
-            b.status === 'confirmed'
-        )) {
-            return jsonResponse({ success: false, error: 'Slot already booked' }, 400);
-        }
-
-        bookings.push(booking);
-        await kv.put('all_bookings', JSON.stringify(bookings));
-
-        return jsonResponse({ success: true, bookingId: booking.bookingId });
-
+        
+        all.push(body);
+        await kv.put('all_bookings', JSON.stringify(all));
+        
+        return jsonResponse({ success: true, bookingId: body.bookingId });
     } catch (err) {
-        return jsonResponse({ success: false, error: err.message }, 500);
+        return jsonResponse({ error: err.message }, 500);
     }
 }
-
-function jsonResponse(data, status = 200) {
-    return new Response(JSON.stringify(data), {
-        status,
-        headers: { 'Content-Type': 'application/json' }
-    });
+function jsonResponse(data, status=200) {
+    return new Response(JSON.stringify(data), { status, headers:{'Content-Type':'application/json'} });
 }
