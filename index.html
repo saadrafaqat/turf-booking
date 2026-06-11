@@ -332,9 +332,16 @@
                 </div>
 
                 <div class="confirmation-actions">
-                    <button type="button" class="share-button" id="share-btn"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></button>
-                    <button type="button" class="done-button" id="done-btn"><i class="fas fa-check"></i><span>Done</span></button>
-                </div>
+                        <button type="button" class="share-button" id="view-receipt-btn" onclick="openReceiptInNewTab()">
+                            <i class="fas fa-external-link-alt"></i><span>View Live Receipt</span>
+                        </button>
+                        <button type="button" class="share-button" id="share-btn">
+                            <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+                        </button>
+                        <button type="button" class="done-button" id="done-btn">
+                            <i class="fas fa-check"></i><span>Done</span>
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
@@ -367,5 +374,13 @@
 <script src="js/payment.js"></script>
 <script src="js/booking.js"></script>
 <script src="js/app.js"></script>
+<script>
+function openReceiptInNewTab() {
+    const id = document.getElementById('pending-id').textContent;
+    if (id && id !== '-') {
+        window.open('/receipt/?id=' + id, '_blank');
+    }
+}
+</script>
 </body>
 </html>
