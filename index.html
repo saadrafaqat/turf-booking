@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CricTurf - Premium Cricket Turf Booking</title>
-<link rel="stylesheet" href="css/styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CricTurf - Premium Cricket Turf Booking</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -16,6 +16,7 @@
     <div class="bg-circle circle-2"></div>
     <div class="bg-circle circle-3"></div>
 </div>
+<div id="particles"></div>
 
 <!-- NAVBAR -->
 <nav class="navbar glass-effect">
@@ -36,7 +37,7 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-content">
+    <div class="hero-content fade-in-up">
         <div class="hero-badge glass-effect">
             <i class="fas fa-fire"></i>
             <span>Book Your Match Today</span>
@@ -45,35 +46,34 @@
             <span class="gradient-text">Book Your</span><br>
             <span class="hero-highlight">Cricket Turf</span>
         </h1>
-        <p class="hero-subtitle">2 Premium Turfs Available. Pay via <strong>Easypaisa</strong> or <strong>JazzCash</strong></p>
+        <p class="hero-subtitle">2 Premium Turfs • Easy Online Booking • Pay via Easypaisa / JazzCash • QR Receipt Verification</p>
         <div class="hero-stats">
             <div class="stat-item"><span class="stat-number">2</span><span class="stat-label">Turfs</span></div>
             <div class="stat-divider"></div>
-            <div class="stat-item"><span class="stat-number">8</span><span class="stat-label">Time Slots</span></div>
+            <div class="stat-item"><span class="stat-number">8</span><span class="stat-label">Slots</span></div>
             <div class="stat-divider"></div>
             <div class="stat-item"><span class="stat-number">22</span><span class="stat-label">Players</span></div>
         </div>
-        <a href="#turfs" class="cta-button">
-            <span>View Available Turfs</span>
-            <i class="fas fa-arrow-down"></i>
+        <a href="#turfs" class="cta-button pulse-glow">
+            <span>View Available Slots</span><i class="fas fa-arrow-down"></i>
         </a>
     </div>
 </section>
 
 <!-- TURFS SECTION -->
 <section id="turfs" class="slots-section">
-    <div class="section-header">
-        <h2 class="section-title">Available <span class="gradient-text">Turfs</span></h2>
+    <div class="section-header fade-in-up">
+        <h2 class="section-title">Available <span class="gradient-text">Turfs & Slots</span></h2>
         <p class="section-subtitle">Choose your turf and time slot</p>
     </div>
 
-    <div class="date-picker-container glass-effect">
+    <div class="date-picker-container glass-effect fade-in-up">
         <label for="booking-date"><i class="fas fa-calendar-alt"></i> Select Date</label>
         <input type="date" id="booking-date" class="date-input">
     </div>
 
     <!-- TURF 1 -->
-    <div class="turf-section">
+    <div class="turf-section fade-in-up">
         <div class="turf-header glass-effect">
             <div class="turf-info">
                 <h2 class="turf-name">🏏 Turf 1 - Premium</h2>
@@ -85,14 +85,11 @@
                 <span class="turf-feature"><i class="fas fa-parking"></i> Parking</span>
             </div>
         </div>
-
-        <div class="slots-grid" id="turf-1-slots">
-            <!-- Slots will be inserted by JS -->
-        </div>
+        <div class="slots-grid" id="turf-1-slots"></div>
     </div>
 
     <!-- TURF 2 -->
-    <div class="turf-section">
+    <div class="turb-section fade-in-up">
         <div class="turf-header glass-effect">
             <div class="turf-info">
                 <h2 class="turf-name">🏏 Turf 2 - Standard</h2>
@@ -104,16 +101,13 @@
                 <span class="turf-feature"><i class="fas fa-parking"></i> Parking</span>
             </div>
         </div>
-
-        <div class="slots-grid" id="turf-2-slots">
-            <!-- Slots will be inserted by JS -->
-        </div>
+        <div class="slots-grid" id="turf-2-slots"></div>
     </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about" class="about-section">
-    <div class="about-content glass-effect">
+    <div class="about-content glass-effect fade-in-up">
         <h2 class="section-title">Why Choose <span class="gradient-text">CricTurf</span>?</h2>
         <div class="features-grid">
             <div class="feature-card">
@@ -147,15 +141,16 @@
 
         <div class="progress-steps">
             <div class="step active" id="step-1-indicator"><div class="step-number">1</div><span>Details</span></div>
-            <div class="step-line"></div>
+            <div class="step-line" id="line-1"></div>
             <div class="step" id="step-2-indicator"><div class="step-number">2</div><span>Payment</span></div>
-            <div class="step-line"></div>
+            <div class="step-line" id="line-2"></div>
             <div class="step" id="step-3-indicator"><div class="step-number">3</div><span>Confirm</span></div>
         </div>
 
-        <!-- STEP 1 -->
+        <!-- STEP 1: Details -->
         <div class="modal-step" id="step-1">
             <h2 class="modal-title"><i class="fas fa-user-edit"></i> Your Details</h2>
+            
             <div class="booking-summary glass-effect-dark">
                 <div class="summary-row">
                     <div class="summary-item"><i class="fas fa-futbol"></i><span id="summary-turf">-</span></div>
@@ -169,7 +164,8 @@
                     <span class="summary-price-value" id="summary-price">-</span>
                 </div>
             </div>
-            <form id="user-details-form" class="booking-form">
+
+            <form id="user-details-form" class="booking-form" novalidate>
                 <div class="form-row">
                     <div class="form-group">
                         <label><i class="fas fa-user"></i> Full Name *</label>
@@ -198,71 +194,95 @@
                             <option value="10">10 Players</option>
                             <option value="12">12 Players</option>
                             <option value="16">16 Players</option>
-                            <option value="22">22 Players</option>
+                            <option value="22">22 Players (Full Match)</option>
                         </select>
                     </div>
                 </div>
                 <button type="submit" class="next-button">
-                    <span>Continue to Payment</span>
-                    <i class="fas fa-arrow-right"></i>
+                    <span>Continue to Payment</span><i class="fas fa-arrow-right"></i>
                 </button>
             </form>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: Payment -->
         <div class="modal-step hidden" id="step-2">
             <h2 class="modal-title"><i class="fas fa-wallet"></i> Payment</h2>
+
             <div class="payment-info glass-effect-dark">
                 <div class="payment-row"><span>Turf</span><span id="payment-turf">-</span></div>
                 <div class="payment-row"><span>Slot</span><span id="payment-slot-time">-</span></div>
                 <div class="payment-row"><span>Date</span><span id="payment-date">-</span></div>
+                <div class="payment-row"><span>Customer</span><span id="payment-customer">-</span></div>
                 <div class="payment-divider"></div>
-                <div class="payment-row total"><span>Total</span><span id="payment-total">-</span></div>
+                <div class="payment-row total"><span>Total Amount</span><span id="payment-total" class="total-amount">-</span></div>
             </div>
 
             <h3 class="methods-title"><i class="fas fa-credit-card"></i> Select Payment Method</h3>
             <div class="method-cards">
-                <div class="method-card active" id="method-easypaisa" data-method="easypaisa">
+                <div class="method-card active" id="method-easypaisa">
                     <div class="method-radio"><div class="radio-dot"></div></div>
-                    <div class="method-info">
-                        <span class="method-name">Easypaisa</span>
-                        <span class="method-desc">Mobile Wallet</span>
-                    </div>
+                    <div class="method-info"><span class="method-name">Easypaisa</span><span class="method-desc">Mobile Wallet</span></div>
+                    <div class="method-check"><i class="fas fa-check"></i></div>
                 </div>
-                <div class="method-card" id="method-jazzcash" data-method="jazzcash">
+                <div class="method-card" id="method-jazzcash">
                     <div class="method-radio"><div class="radio-dot"></div></div>
-                    <div class="method-info">
-                        <span class="method-name">JazzCash</span>
-                        <span class="method-desc">Mobile Wallet</span>
-                    </div>
+                    <div class="method-info"><span class="method-name">JazzCash</span><span class="method-desc">Mobile Wallet</span></div>
+                    <div class="method-check"><i class="fas fa-check"></i></div>
                 </div>
             </div>
 
             <div class="payment-details-section glass-effect-dark">
                 <div class="payment-method-details" id="details-easypaisa">
-                    <h3>Send Payment to Easypaisa</h3>
-                    <div class="account-row"><span>Account Title</span><span>Muhammad Rafaqat</span></div>
-                    <div class="account-row highlight-row">
-                        <span>Number</span>
-                        <span class="copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                    <div class="account-header easypaisa-header">
+                        <h3>Send Payment to Easypaisa</h3>
                     </div>
-                    <div class="account-row"><span>Amount</span><span class="amount-highlight" id="ep-amount">₨0</span></div>
+                    <div class="account-details">
+                        <div class="account-row"><span class="account-label">Account Title</span><span class="account-value">Muhammad Rafaqat</span></div>
+                        <div class="account-row highlight-row">
+                            <span class="account-label">Number</span>
+                            <span class="account-value copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                        </div>
+                        <div class="account-row"><span class="account-label">Amount to Send</span><span class="account-value amount-highlight" id="ep-amount">₨0</span></div>
+                    </div>
+                    <div class="payment-steps">
+                        <ol>
+                            <li>Open <strong>Easypaisa App</strong></li>
+                            <li>Go to <strong>Send Money</strong></li>
+                            <li>Enter number: <strong>0340-9016279</strong></li>
+                            <li>Enter amount shown above</li>
+                            <li>Note the <strong>Transaction ID</strong></li>
+                        </ol>
+                    </div>
                 </div>
+
                 <div class="payment-method-details hidden" id="details-jazzcash">
-                    <h3>Send Payment to JazzCash</h3>
-                    <div class="account-row"><span>Account Title</span><span>Muhammad Rafaqat</span></div>
-                    <div class="account-row highlight-row">
-                        <span>Number</span>
-                        <span class="copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                    <div class="account-header jazzcash-header">
+                        <h3>Send Payment to JazzCash</h3>
                     </div>
-                    <div class="account-row"><span>Amount</span><span class="amount-highlight" id="jc-amount">₨0</span></div>
+                    <div class="account-details">
+                        <div class="account-row"><span class="account-label">Account Title</span><span class="account-value">Muhammad Rafaqat</span></div>
+                        <div class="account-row highlight-row">
+                            <span class="account-label">Number</span>
+                            <span class="account-value copyable" onclick="copyToClipboard('03409016279',this)">0340-9016279 <i class="fas fa-copy"></i></span>
+                        </div>
+                        <div class="account-row"><span class="account-label">Amount to Send</span><span class="account-value amount-highlight" id="jc-amount">₨0</span></div>
+                    </div>
+                    <div class="payment-steps">
+                        <ol>
+                            <li>Open <strong>JazzCash App</strong></li>
+                            <li>Go to <strong>Send Money</strong></li>
+                            <li>Enter number: <strong>0340-9016279</strong></li>
+                            <li>Enter amount shown above</li>
+                            <li>Note the <strong>Transaction ID</strong></li>
+                        </ol>
+                    </div>
                 </div>
             </div>
 
             <div class="transaction-section">
                 <div class="form-group">
                     <label><i class="fas fa-hashtag"></i> Transaction ID *</label>
-                    <input type="text" id="transactionId" placeholder="e.g. TXN123456789" required>
+                    <input type="text" id="transactionId" placeholder="TXN123456789" required>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-phone"></i> Sender Number *</label>
@@ -280,22 +300,21 @@
             </div>
 
             <div class="button-group">
-                <button type="button" class="back-button" id="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <button type="button" class="pay-button" id="pay-button">
-                    <span id="pay-text">Submit for Verification</span>
-                    <div class="spinner hidden" id="pay-spinner"></div>
-                </button>
+                <button type="button" class="back-button" id="back-to-step1-btn"><i class="fas fa-arrow-left"></i><span>Back</span></button>
+                <button type="button" class="pay-button" id="pay-button"><span id="pay-button-text">Submit for Verification</span><div class="spinner hidden" id="pay-spinner"></div></button>
             </div>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: Confirmation -->
         <div class="modal-step hidden" id="step-3">
             <div class="confirmation-content">
-                <div class="pending-circle">
-                    <i class="fas fa-hourglass-half"></i>
+                <div class="pending-animation">
+                    <div class="pending-circle">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
                 </div>
                 <h2 class="confirmation-title">Booking Submitted! ⏳</h2>
-                <p class="confirmation-subtitle">Awaiting admin verification</p>
+                <p class="confirmation-subtitle">Your payment is being verified by admin</p>
 
                 <div class="pending-info glass-effect-dark">
                     <div class="pending-row">
@@ -304,30 +323,17 @@
                     </div>
                     <div class="pending-row">
                         <span>Status</span>
-                        <span class="pending-status">⏳ PENDING</span>
+                        <span class="pending-status">⏳ PENDING VERIFICATION</span>
+                    </div>
+                    <div class="pending-row">
+                        <span>Check Status</span>
+                        <a href="#" class="pending-value status-link" id="status-link" target="_blank">View Receipt →</a>
                     </div>
                 </div>
 
-                <div class="info-box glass-effect-dark">
-                    <i class="fas fa-info-circle"></i>
-                    <p>You will receive a QR code receipt once admin confirms your payment. Save your Booking ID to check status later.</p>
-                </div>
-
-                <div class="check-status-section glass-effect-dark">
-                    <p><strong>Check status anytime:</strong></p>
-                    <a id="status-link" href="#" target="_blank" class="status-link">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span id="status-link-text">View Booking Status</span>
-                    </a>
-                </div>
-
                 <div class="confirmation-actions">
-                    <button type="button" class="share-button" id="share-btn">
-                        <i class="fab fa-whatsapp"></i> Share
-                    </button>
-                    <button type="button" class="done-button" id="done-btn">
-                        <i class="fas fa-check"></i> Done
-                    </button>
+                    <button type="button" class="share-button" id="share-btn"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></button>
+                    <button type="button" class="done-button" id="done-btn"><i class="fas fa-check"></i><span>Done</span></button>
                 </div>
             </div>
         </div>
@@ -350,14 +356,14 @@
             <div class="footer-info-item"><i class="fas fa-phone"></i><span>0340-9016279</span></div>
         </div>
         <p class="copyright">© 2024 CricTurf. All rights reserved.</p>
-        <p style="margin-top:15px;font-size:0.7rem;opacity:0.4;">
-            <a href="admin/" style="color:rgba(255,255,255,0.3);text-decoration:none;">
-                <i class="fas fa-lock"></i> Admin
-            </a>
+        <p style="margin-top:10px;font-size:0.7rem;opacity:0.3;">
+            <a href="admin/" style="color:rgba(255,255,255,0.3);text-decoration:none;">Admin Panel</a>
         </p>
     </div>
 </footer>
 
+<script src="js/animations.js"></script>
+<script src="js/receipt.js"></script>
 <script src="js/payment.js"></script>
 <script src="js/booking.js"></script>
 <script src="js/app.js"></script>
